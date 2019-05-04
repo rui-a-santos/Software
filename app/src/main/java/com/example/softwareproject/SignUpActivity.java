@@ -3,22 +3,27 @@ package com.example.softwareproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,6 +33,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+import java.util.Scanner;
 
 
 /**
@@ -37,6 +50,11 @@ public class SignUpActivity extends AppCompatActivity {
 
     private static final String TAG = "Works";
     private static final int CAMERA_REQUEST_CODE = 1;
+    private static final int PHOTO_REQUEST =10 ;
+    private static final int REQUEST_WRITE_PERMISSION = 20;
+    private static final String SAVED_INSTANCE_URI = "uri";
+    private static final String SAVED_INSTANCE_RESULT = "result";
+    private static final int CAMERA_REQ = 1;
     private TextInputEditText inputPassword = null;
     private TextInputEditText inputPassword2 = null;
     private TextInputEditText inputEmail = null;
@@ -46,8 +64,15 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressDialog mProgress;
 
     private FirebaseAuth mAuth = null;
+    ProgressDialog progressDialog;
 
     private StorageReference mStorage;
+    private FirebaseAuth firebase;
+    private Uri uri;
+    private Uri picUri;
+    private ImageView mImageView;
+    private Bitmap photo;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -68,7 +93,12 @@ public class SignUpActivity extends AppCompatActivity {
         inputWeight = findViewById(R.id.input_weight);
         mAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance().getReference();
-mProgress = new ProgressDialog(this);
+        mProgress = new ProgressDialog(this);
+        mImageView = findViewById(R.id.iv);
+
+        progressDialog = new ProgressDialog(SignUpActivity.this);
+
+
 
     }
 
@@ -160,29 +190,58 @@ mProgress = new ProgressDialog(this);
 
 
     public void takeSelfie(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivity(intent);
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQ);
+    }
+    @SuppressWarnings("VisibleForTests")
+    public void submit(){
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] b = stream.toByteArray();
+        final StorageReference storageReference =FirebaseStorage.getInstance().getReference().child("documentImages").child("noplateImg");
+
+        Task<Uri> urlTask = storageReference.putBytes(b).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+            @Override
+            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                // Continue with the task to get the download URL
+                return storageReference.getDownloadUrl();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Uri downloadUri = task.getResult();
+                    Toast.makeText(SignUpActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // Handle failures
+                    // ...
+                }
+            }
+        });
+
+
+        //StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
+
+
+
+
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQ && resultCode ==RESULT_OK) {
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-
-            StorageReference filepath = mStorage.child("Photos").child(uri.getLastPathSegment());
-            filepath.putFile(uri);
-
-            filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    mProgress.dismiss();
-Toast.makeText(SignUpActivity.this, "Upload finished...", Toast.LENGTH_LONG).show();
-                }
-            });
+            photo = (Bitmap) data.getExtras().get("data");
+            submit();
         }
     }
-}
 
+
+
+
+}
