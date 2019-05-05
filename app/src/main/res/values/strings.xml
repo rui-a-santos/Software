@@ -33,4 +33,5 @@
     <string name="delete_account">Delete account</string>
     <string name="log_out">Logout</string>
     <string name="select_capture">Select or Capture Image</string>
+    <string name="view_profile">View your profile</string>
 </resources>

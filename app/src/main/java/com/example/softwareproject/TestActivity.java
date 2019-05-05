@@ -77,4 +77,8 @@ FirebaseUser user;
         startActivity(new Intent(TestActivity.this, Login.class));
         finish();
     }
+
+    public void viewProfile(View view) {
+        startActivity(new Intent(TestActivity.this, Profile.class));
+    }
 }
