@@ -57,6 +57,9 @@ FirebaseUser user;
 
     public void deleteUser(View view) {
 
+
+
+
         user.delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -80,5 +83,10 @@ FirebaseUser user;
 
     public void viewProfile(View view) {
         startActivity(new Intent(TestActivity.this, Profile.class));
+    }
+
+    public void goChat(View view) {
+        startActivity(new Intent(TestActivity.this, Chat.class));
+
     }
 }
