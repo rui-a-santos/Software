@@ -89,4 +89,8 @@ FirebaseUser user;
         startActivity(new Intent(TestActivity.this, Chat.class));
 
     }
+
+    public void goMap(View view) {
+        startActivity(new Intent(TestActivity.this, MapActivity.class));
+    }
 }
