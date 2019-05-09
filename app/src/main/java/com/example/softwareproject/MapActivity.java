@@ -172,8 +172,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                         double lng = user.getLng();
                                         LatLng loc = new LatLng(lat, lng);
                                         MarkerOptions mo = new MarkerOptions()
-                                                .position(loc)
-                                                .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_my_location_black_24dp));
+                                                .position(loc);
                                         mGoogleMap.addMarker(mo);
                                     }
                                 }
@@ -243,8 +242,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         //Add the marker to the map.
         MarkerOptions mo = new MarkerOptions()
-                .position(this.mLocation)
-                .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_my_location_black_24dp));
+                .position(this.mLocation);
         this.mUserLocationMarker = this.mGoogleMap.addMarker(mo);
     }
 
@@ -317,14 +315,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
+//    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+//        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+//        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
+//        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//        Canvas canvas = new Canvas(bitmap);
+//        vectorDrawable.draw(canvas);
+//        return BitmapDescriptorFactory.fromBitmap(bitmap);
+//    }
 
 
     @Override
