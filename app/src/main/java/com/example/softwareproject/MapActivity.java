@@ -16,6 +16,7 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +36,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +72,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private double mLng = 0;
 
     private float mSearchDistance;
-    FirebaseDatabase database;
+    private FirebaseDatabase database;
+    private FirebaseUser user;
 
 
     private Map<Double, Double> mMarkerLocationList = null;
@@ -104,9 +112,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        database = FirebaseDatabase.getInstance();
+        this.database = FirebaseDatabase.getInstance();
+        this.user = FirebaseAuth.getInstance().getCurrentUser();
+        // Attach a listener to read the data at our posts reference
+        database.getReference("Users").child(user.getUid()).child("lat").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Double post = (Double) dataSnapshot.getValue();
+                if(post!=null) {
+                    Log.v("cum", String.valueOf(post));
+                }
+            }
 
-        //Checking for permissions, and if we receive permission then start the location service.
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
+
+
+            //Checking for permissions, and if we receive permission then start the location service.
 
         if (!checkRunPermissions()) {
             Log.v("start", "started");
@@ -133,6 +158,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     mUserLocation = new Location("");
                     mUserLocation.setLatitude(mLat);
                     mUserLocation.setLongitude(mLng);
+                    DatabaseReference reference = database.getReference(("Users"));
+                    reference.child(user.getUid()).child("lat").setValue(mLat);
+                    reference.child(user.getUid()).child("lng").setValue(mLng);
+                    mGoogleMap.clear();
+
+                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        User user = snapshot.getValue(User.class);
+                                        double lat = user.getLat();
+                                        double lng = user.getLng();
+                                        LatLng loc = new LatLng(lat, lng);
+                                        MarkerOptions mo = new MarkerOptions()
+                                                .position(loc)
+                                                .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.ic_my_location_black_24dp));
+                                        mGoogleMap.addMarker(mo);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
                     //Setting location for the camera.
                     mLocation = new LatLng(mLat, mLng);
                     mCameraUpdate = CameraUpdateFactory.newLatLngZoom(mLocation, 16);
@@ -141,6 +189,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mGoogleMap.animateCamera(mCameraUpdate);
                         mFirstUpdate = false;
                     }
+
                     //Add the marker that shows where the user is.
                     addUserMarker();
 
@@ -184,12 +233,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return permission;
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
-    }
+
 
 
     private void addUserMarker() {

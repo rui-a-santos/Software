@@ -41,6 +41,8 @@ public class Profile extends AppCompatActivity {
     DatabaseReference rootRef;
     DatabaseReference userRef;
     ValueEventListener valueEventListener;
+    private double lat = 0;
+    private double lng = 0;
 
 
     //add Firebase Database stuff

@@ -6,6 +6,9 @@ public class User {
     public String lastName;
     public String email = null;
     public double weight = 0;
+    public double lat = 0;
+    public double lng = 0;
+
 
     public User() {}
 
@@ -14,6 +17,8 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.weight = weight;
+        this.lat = 0;
+        this.lng = 0;
     }
 
     public String getFirstName() {
@@ -46,5 +51,13 @@ public class User {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public double getLng() {
+        return lng;
     }
 }
