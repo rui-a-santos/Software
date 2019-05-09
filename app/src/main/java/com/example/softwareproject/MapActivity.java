@@ -166,7 +166,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                                 // do something with key and/or tab
                                             }
                                         } else {
-                                            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getEmail()));
+                                            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
                                             Log.v("FML", "FML");
                                             mMarkerList.put(u.getEmail(), marker);
                                         }
@@ -358,9 +358,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         if(sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             steps_walked++;
+            DatabaseReference ref = database.getReference("Users").child(user.getUid()).child("steps");
+            ref.setValue(steps_walked);
+        }
+
+
+
             this.stepsTextView.setText("Steps walked : "  + steps_walked + "Distance run : " + getDistanceRun(steps_walked) + " metres");
             Log.v("Steps", String.valueOf(steps_walked));
-        }
+
     }
     //Multiply steps by average height of a male (78cm). Divide by 100 to get answer in metres.
     public float getDistanceRun(long steps) {

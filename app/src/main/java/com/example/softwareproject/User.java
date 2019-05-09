@@ -8,6 +8,7 @@ public class User {
     public double weight = 0.0;
     public double lat = 0.0;
     public double lng = 0.0;
+    public double steps = 0.0;
 
 
     public User() {}
