@@ -5,9 +5,9 @@ public class User {
     public String firstName;
     public String lastName;
     public String email = null;
-    public double weight = 0;
-    public double lat = 0;
-    public double lng = 0;
+    public double weight = 0.0;
+    public double lat = 0.0;
+    public double lng = 0.0;
 
 
     public User() {}

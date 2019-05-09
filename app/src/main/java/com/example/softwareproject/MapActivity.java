@@ -44,7 +44,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -58,29 +61,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private CameraUpdate mCameraUpdate = null;
     private boolean mFirstUpdate = true;
     private double mLat = 0;
-    private SensorManager sensorManager;
-    private float steps_walked1 = 0.0f;
-    private boolean running = false;
-    private boolean doOnce = true;
     private TextView stepsTextView = null;
-    private float startSteps = 0.0f;
     private long steps_walked = 0;
     private SensorManager sManager;
     private Sensor stepSensor;
-
-
     private double mLng = 0;
-
     private float mSearchDistance;
     private FirebaseDatabase database;
     private FirebaseUser user;
-
-
-    private Map<Double, Double> mMarkerLocationList = null;
-
     private Marker mUserLocationMarker = null;
-
     private Location mUserLocation = null;
+    private Map<String, Marker> mMarkerList = null;
 
 
     @Override
@@ -101,7 +92,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         this.sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         this.stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        this.mMarkerLocationList = new HashMap<>();
+        this.mMarkerList = new HashMap<>();
         //Setting view to the layout of the activity.
         this.stepsTextView = (TextView) findViewById(R.id.steps);
         if (this.steps_walked != 0) {
@@ -115,20 +106,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.database = FirebaseDatabase.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         // Attach a listener to read the data at our posts reference
-        database.getReference("Users").child(user.getUid()).child("lat").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Double post = (Double) dataSnapshot.getValue();
-                if(post!=null) {
-                    Log.v("cum", String.valueOf(post));
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
 
 
             //Checking for permissions, and if we receive permission then start the location service.
@@ -161,25 +139,48 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     DatabaseReference reference = database.getReference(("Users"));
                     reference.child(user.getUid()).child("lat").setValue(mLat);
                     reference.child(user.getUid()).child("lng").setValue(mLng);
-                    mGoogleMap.clear();
+                    if(mMarkerList.get(0) != null) Log.v("Help me", mMarkerList.get(0).getTitle());
+                    if(mMarkerList.get(1) != null) Log.v("Help me", mMarkerList.get(1).getTitle());
+                    if(mMarkerList.get(2) != null) Log.v("Help me", mMarkerList.get(2).getTitle());
+
 
                     reference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        User user = snapshot.getValue(User.class);
-                                        double lat = user.getLat();
-                                        double lng = user.getLng();
+                                        Log.v("HELLO", "HELLO");
+                                        User u = snapshot.getValue(User.class);
+                                        double lat = u.getLat();
+                                        double lng = u.getLng();
                                         LatLng loc = new LatLng(lat, lng);
-                                        MarkerOptions mo = new MarkerOptions()
-                                                .position(loc);
-                                        mGoogleMap.addMarker(mo);
+                                        if(mMarkerList.containsKey(u.getEmail())) {
+                                            for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
+                                                String key = entry.getKey();
+                                                Marker marker = entry.getValue();
+                                                Log.v("Help me", key + marker.getPosition());
+                                                if(key == u.getEmail()) {
+                                                    Log.v("I AM HERE", "I AM HERE");
+                                                    marker.setPosition(loc);
+                                                    break;
+                                                }
+                                                // do something with key and/or tab
+                                            }
+                                        } else {
+                                            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getEmail()));
+                                            Log.v("FML", "FML");
+                                            mMarkerList.put(u.getEmail(), marker);
+                                        }
+
+
                                     }
                                 }
+
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
                                 }
                             });
+
+
                     //Setting location for the camera.
                     mLocation = new LatLng(mLat, mLng);
                     mCameraUpdate = CameraUpdateFactory.newLatLngZoom(mLocation, 16);
@@ -213,7 +214,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
-        running = false;
 
     }
 
