@@ -121,10 +121,13 @@ public class Profile extends AppCompatActivity {
 
         for(DataSnapshot ds : dataSnapshot.getChildren()){
             User uInfo = new User();
-            uInfo.setFirstName(ds.child(userID).getValue(User.class).getFirstName()); //set the name
-            uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //set the email
-            uInfo.setLastName(ds.child(userID).getValue(User.class).getLastName());
-            uInfo.setWeight(ds.child(userID).getValue(User.class).getWeight()); //set the name
+            if(ds.child(userID).getValue(User.class) != null) {
+                uInfo.setFirstName(ds.child(userID).getValue(User.class).getFirstName()); //set the name
+                uInfo.setEmail(ds.child(userID).getValue(User.class).getEmail()); //set the email
+                uInfo.setLastName(ds.child(userID).getValue(User.class).getLastName());
+                uInfo.setWeight(ds.child(userID).getValue(User.class).getWeight()); //set the name
+            }
+
 
             firstName.setText(uInfo.getFirstName());
             lastName.setText(uInfo.getLastName());

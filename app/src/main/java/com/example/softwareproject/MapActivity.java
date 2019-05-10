@@ -101,6 +101,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         createStepsListener();
         createUserListener();
+        getUser();
 
         if (!checkRunPermissions()) {
             Log.v("start", "started");
@@ -108,6 +109,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             startService(intent);
         }
 
+
+
+    }
+
+    private void getUser() {
         DatabaseReference steps = this.database.getReference("Users").child(user.getUid());
         steps.addValueEventListener(new ValueEventListener() {
             @Override
@@ -124,7 +130,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
-
     }
 
     private void createStepsListener() {
@@ -135,10 +140,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 long post = (long)dataSnapshot.getValue();
                 if(post != 0) {
                     Log.v("Database steps:", String.valueOf(post));
-                    steps_walked = post;
+                    if(post > steps_walked) {
+                        steps_walked = post;
+                    }
                     long distanceRun = getDistanceRun(steps_walked);
                     stepsTextView.setText(steps_walked + " Steps Walked");
                     distanceTextView.setText(distanceRun + " Metres Travelled");
+                    if(calculateCaloriesBurnt(distanceRun) == 0) {
+                        caloriesTextView.setText("Please begin walking to calculate calories.");
+                    }
                     caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " Calories Burnt");
                 }
             }
@@ -201,6 +211,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             entry.getValue().setPosition(loc);
                             break;
                         }
+
                         // do something with key and/or tab
                     }
                 } else {
@@ -331,6 +342,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putDouble("steps", this.steps_walked);
+        outState.putParcelable("user", this.currentUser);
     }
 
     @Override
