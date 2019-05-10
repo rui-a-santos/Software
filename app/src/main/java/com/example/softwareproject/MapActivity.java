@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,25 +15,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,7 +38,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.github.clans.fab.FloatingActionMenu;
-
+import com.github.clans.fab.FloatingActionButton;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,7 +65,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private TextView distanceTextView = null;
     private TextView caloriesTextView = null;
     private User currentUser = null;
-    private FloatingActionMenu materialDesignFAM;
+    FloatingActionMenu materialDesignFAM;
+    FloatingActionButton floatingActionButtonChat, floatingActionButtonProfile,
+            floatingActionButtonLogout, floatingActionButtonCentre;
 
 
 
@@ -85,12 +76,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        this.sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        this.stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        this.mMarkerList = new HashMap<>();
         this.stepsTextView = findViewById(R.id.steps);
         this.distanceTextView = findViewById(R.id.distance);
         this.caloriesTextView = findViewById(R.id.calories);
+        this.materialDesignFAM = findViewById(R.id.material_design_android_floating_action_menu);
+        this.floatingActionButtonChat = findViewById(R.id.material_design_floating_action_menu_chat);
+        this.floatingActionButtonProfile = findViewById(R.id.material_design_floating_action_menu_person);
+        this.floatingActionButtonLogout = findViewById(R.id.material_design_floating_action_menu_logout);
+        this.floatingActionButtonCentre = findViewById(R.id.material_design_floating_action_menu_centre);
+
+        createFabListeners();
+
+        this.sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        this.stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        this.mMarkerList = new HashMap<>();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -111,6 +110,43 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
+    }
+
+    private void createFabListeners() {
+        floatingActionButtonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Profile", "Profile");
+                Intent intent = new Intent(MapActivity.this, Chat.class);
+                startActivity(intent);
+            }
+        });
+        floatingActionButtonProfile.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.v("Chat", "Chat");
+                Intent intent = new Intent(MapActivity.this, Profile.class);
+                startActivity(intent);
+            }
+        });
+        floatingActionButtonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v("Logout", "Logout");
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MapActivity.this, Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        floatingActionButtonCentre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLocation = new LatLng(mLat, mLng);
+                mCameraUpdate = CameraUpdateFactory.newLatLngZoom(mLocation, 16);
+                mGoogleMap.animateCamera(mCameraUpdate);
+
+            }
+        });
     }
 
     private void getUser() {

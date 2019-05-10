@@ -33,7 +33,7 @@ public class Login extends AppCompatActivity {
 
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(Login.this, TestActivity.class));
+            startActivity(new Intent(Login.this, MapActivity.class));
         }
 
 
@@ -63,7 +63,7 @@ public class Login extends AppCompatActivity {
                             Log.d("Works?", "signInWithEmail:success");
                             FirebaseUser user = auth.getCurrentUser();
 
-                            startActivity(new Intent(Login.this, TestActivity.class));
+                            startActivity(new Intent(Login.this, MapActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

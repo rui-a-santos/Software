@@ -140,21 +140,38 @@
             fab:menu_showShadow="true">
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item1"
+                android:id="@+id/material_design_floating_action_menu_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_chat_black_24dp"
-                fab:fab_label="Menu Item 1"
+                fab:fab_label="Chat!"
                 fab:fab_size="mini" />
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_item2"
+                android:id="@+id/material_design_floating_action_menu_person"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_person_black_24dp"
-                fab:fab_label="Menu Item 2"
+                fab:fab_label="Logout"
+                fab:fab_size="mini" />
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/material_design_floating_action_menu_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_exit_to_app_black_24dp"
+                fab:fab_label="Logout"
                 fab:fab_size="mini" />
         </com.github.clans.fab.FloatingActionMenu>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/material_design_floating_action_menu_centre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:baselineAlignBottom="false"
+            android:src="@drawable/ic_adjust_black_24dp"
+            fab:fab_label="Chat!"
+            fab:fab_size="mini" />
 
     </FrameLayout>
 
