@@ -132,7 +132,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         steps.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long post = (long)dataSnapshot.getValue();
+                long post = 0;
+                if(dataSnapshot.getValue()!=null) {
+                    post = (long)dataSnapshot.getValue();
+                }
                 if(post != 0) {
                     Log.v("Database steps:", String.valueOf(post));
                     steps_walked = post;
