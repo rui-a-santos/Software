@@ -17,6 +17,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +39,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -83,7 +85,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             this.mSearchDistance = savedInstanceState.getFloat("searchDistance", 1500);
             this.mLat = savedInstanceState.getDouble("lat", 0);
             this.mLng = savedInstanceState.getDouble("lng", 0);
-            this.steps_walked = savedInstanceState.getLong("steps", 0);
         } else {
             this.mSearchDistance = 1500;
         }
@@ -95,9 +96,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.mMarkerList = new HashMap<>();
         //Setting view to the layout of the activity.
         this.stepsTextView = (TextView) findViewById(R.id.steps);
-        if (this.steps_walked != 0) {
-            this.stepsTextView.setText("Steps walked : " + this.steps_walked);
-        }
         //Initialising map fragment.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -106,6 +104,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.database = FirebaseDatabase.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
         // Attach a listener to read the data at our posts reference
+        DatabaseReference steps = this.database.getReference("Users").child(user.getUid()).child("steps");
+        steps.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                long post = (long)dataSnapshot.getValue();
+                if(post != 0) {
+                    Log.v("Database steps:", String.valueOf(post));
+                    steps_walked = post;
+                    stepsTextView.setText("Steps walked : " + steps_walked + "Distance steps: " + getDistanceRun(steps_walked));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+                stepsTextView.setText("Steps walked : " +  + getDistanceRun(steps_walked));
+            }
+        });
+
+        createUserListener();
+
+
 
 
 
@@ -117,6 +137,77 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             startService(intent);
         }
 
+    }
+
+    private void createUserListener() {
+        DatabaseReference ref = this.database.getReference("Users");
+
+        ref.addChildEventListener(new ChildEventListener() {
+
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User u = dataSnapshot.getValue(User.class);
+                double lat = u.getLat();
+                double lng = u.getLng();
+                if(lat == 0 && lng == 0) return;
+                LatLng loc = new LatLng(lat, lng);
+                if(mMarkerList.containsKey(u.getEmail())) {
+                    for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
+                        String key = entry.getKey();
+                        Log.v("Help me", key + entry.getValue().getPosition());
+                        if(key == u.getEmail()) {
+                            Log.v("I AM HERE", "I AM HERE");
+                            entry.getValue().setPosition(loc);
+                            break;
+                        }
+                        // do something with key and/or tab
+                    }
+                } else {
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
+                    Log.v("FML", "FML");
+                    mMarkerList.put(u.getEmail(), marker);
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                User u = dataSnapshot.getValue(User.class);
+                double lat = u.getLat();
+                double lng = u.getLng();
+                LatLng loc = new LatLng(lat, lng);
+                if(mMarkerList.containsKey(u.getEmail())) {
+                    for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
+                        String key = entry.getKey();
+                        Log.v("Help me", key + entry.getValue().getPosition());
+                        if(key == u.getEmail()) {
+                            Log.v("I AM HERE", "I AM HERE");
+                            entry.getValue().setPosition(loc);
+                            break;
+                        }
+                        // do something with key and/or tab
+                    }
+                } else {
+                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
+                    Log.v("FML", "FML");
+                    mMarkerList.put(u.getEmail(), marker);
+                }
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
     }
 
 
@@ -144,41 +235,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if(mMarkerList.get(2) != null) Log.v("Help me", mMarkerList.get(2).getTitle());
 
 
-                    reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        Log.v("HELLO", "HELLO");
-                                        User u = snapshot.getValue(User.class);
-                                        double lat = u.getLat();
-                                        double lng = u.getLng();
-                                        LatLng loc = new LatLng(lat, lng);
-                                        if(mMarkerList.containsKey(u.getEmail())) {
-                                            for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
-                                                String key = entry.getKey();
-                                                Marker marker = entry.getValue();
-                                                Log.v("Help me", key + marker.getPosition());
-                                                if(key == u.getEmail()) {
-                                                    Log.v("I AM HERE", "I AM HERE");
-                                                    marker.setPosition(loc);
-                                                    break;
-                                                }
-                                                // do something with key and/or tab
-                                            }
-                                        } else {
-                                            Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
-                                            Log.v("FML", "FML");
-                                            mMarkerList.put(u.getEmail(), marker);
-                                        }
 
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
 
 
                     //Setting location for the camera.
@@ -191,7 +248,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
 
                     //Add the marker that shows where the user is.
-                    addUserMarker();
 
                 }
             };
@@ -343,7 +399,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         outState.putFloat("searchDistance", this.mSearchDistance);
         outState.putDouble("lat", this.mLat);
         outState.putDouble("lng", this.mLng);
-        outState.putLong("steps", this.steps_walked);
+        outState.putDouble("steps", this.steps_walked);
     }
 
     @Override
@@ -361,16 +417,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             DatabaseReference ref = database.getReference("Users").child(user.getUid()).child("steps");
             ref.setValue(steps_walked);
         }
-
-
-
-            this.stepsTextView.setText("Steps walked : "  + steps_walked + "Distance run : " + getDistanceRun(steps_walked) + " metres");
-            Log.v("Steps", String.valueOf(steps_walked));
+        Log.v("Steps", String.valueOf(steps_walked));
 
     }
     //Multiply steps by average height of a male (78cm). Divide by 100 to get answer in metres.
     public float getDistanceRun(long steps) {
-        float distance = (float)(steps*78)/(float)100;
+        long distance = (steps*78)/100;
         return distance;
     }
 

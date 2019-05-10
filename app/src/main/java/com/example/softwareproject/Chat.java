@@ -117,7 +117,7 @@ public class Chat extends AppCompatActivity {
 
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
-                Snackbar.make(activity_main,"PPPPPPPPP",Snackbar.LENGTH_SHORT).show();
+//                Snackbar.make(activity_main,"PPPPPPPPP",Snackbar.LENGTH_SHORT).show();
 
                 //Get references to the views of list_item.xml
                 TextView messageText, messageUser, messageTime;
