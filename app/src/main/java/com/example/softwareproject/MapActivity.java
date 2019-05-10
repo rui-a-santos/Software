@@ -48,11 +48,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.github.clans.fab.FloatingActionMenu;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -78,6 +76,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private TextView distanceTextView = null;
     private TextView caloriesTextView = null;
     private User currentUser = null;
+    private FloatingActionMenu materialDesignFAM;
+
 
 
     @Override
@@ -170,10 +170,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void createUserListener() {
         DatabaseReference ref = this.database.getReference("Users");
-
         ref.addChildEventListener(new ChildEventListener() {
-
-
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 User u = dataSnapshot.getValue(User.class);
