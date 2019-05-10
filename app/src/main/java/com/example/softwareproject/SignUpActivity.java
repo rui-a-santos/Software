@@ -150,7 +150,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             User user = new User(
-                                    firstName, lastName,
+                                    mAuth.getUid(),firstName, lastName,
                                     email, weight
 
                             );

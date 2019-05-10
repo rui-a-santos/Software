@@ -18,12 +18,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,47 +66,68 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private CameraUpdate mCameraUpdate = null;
     private boolean mFirstUpdate = true;
     private double mLat = 0;
-    private TextView stepsTextView = null;
+    private double mLng = 0;
     private long steps_walked = 0;
     private SensorManager sManager;
     private Sensor stepSensor;
-    private double mLng = 0;
-    private float mSearchDistance;
-    private FirebaseDatabase database;
-    private FirebaseUser user;
-    private Marker mUserLocationMarker = null;
     private Location mUserLocation = null;
     private Map<String, Marker> mMarkerList = null;
+    private FirebaseDatabase database;
+    private FirebaseUser user;
+    private TextView stepsTextView = null;
+    private TextView distanceTextView = null;
+    private TextView caloriesTextView = null;
+    private User currentUser = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //If we are receiving a bundle then we have to set the searchDistance field to what it was.
-        if (savedInstanceState != null) {
-            this.mSearchDistance = savedInstanceState.getFloat("searchDistance", 1500);
-            this.mLat = savedInstanceState.getDouble("lat", 0);
-            this.mLng = savedInstanceState.getDouble("lng", 0);
-        } else {
-            this.mSearchDistance = 1500;
-        }
         setContentView(R.layout.activity_map);
-
 
         this.sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         this.stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         this.mMarkerList = new HashMap<>();
-        //Setting view to the layout of the activity.
-        this.stepsTextView = (TextView) findViewById(R.id.steps);
-        //Initialising map fragment.
+        this.stepsTextView = findViewById(R.id.steps);
+        this.distanceTextView = findViewById(R.id.distance);
+        this.caloriesTextView = findViewById(R.id.calories);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         this.database = FirebaseDatabase.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
-        // Attach a listener to read the data at our posts reference
+
+        createStepsListener();
+        createUserListener();
+
+        if (!checkRunPermissions()) {
+            Log.v("start", "started");
+            Intent intent = new Intent(getApplicationContext(), LocationService.class);
+            startService(intent);
+        }
+
+        DatabaseReference steps = this.database.getReference("Users").child(user.getUid());
+        steps.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if(user != null) {
+                    currentUser = user;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+
+            }
+        });
+
+    }
+
+    private void createStepsListener() {
         DatabaseReference steps = this.database.getReference("Users").child(user.getUid()).child("steps");
         steps.addValueEventListener(new ValueEventListener() {
             @Override
@@ -112,31 +136,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if(post != 0) {
                     Log.v("Database steps:", String.valueOf(post));
                     steps_walked = post;
-                    stepsTextView.setText("Steps walked : " + steps_walked + "Distance steps: " + getDistanceRun(steps_walked));
+                    long distanceRun = getDistanceRun(steps_walked);
+                    stepsTextView.setText(steps_walked + " Steps Walked");
+                    distanceTextView.setText(distanceRun + " Metres Travelled");
+                    caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " Calories Burnt");
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
-                stepsTextView.setText("Steps walked : " +  + getDistanceRun(steps_walked));
+                long distanceRun = getDistanceRun(steps_walked);
+                stepsTextView.setText("Steps walked : " +  steps_walked);
+                stepsTextView.setText(steps_walked + " Steps Walked");
+                distanceTextView.setText(distanceRun + " Metres Travelled");
+                caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " Calories Burnt");
             }
         });
-
-        createUserListener();
-
-
-
-
-
-            //Checking for permissions, and if we receive permission then start the location service.
-
-        if (!checkRunPermissions()) {
-            Log.v("start", "started");
-            Intent intent = new Intent(getApplicationContext(), LocationService.class);
-            startService(intent);
-        }
-
     }
 
     private void createUserListener() {
@@ -152,11 +168,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 double lng = u.getLng();
                 if(lat == 0 && lng == 0) return;
                 LatLng loc = new LatLng(lat, lng);
-                if(mMarkerList.containsKey(u.getEmail())) {
+                if(mMarkerList.containsKey(u.getId())) {
                     for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
                         String key = entry.getKey();
                         Log.v("Help me", key + entry.getValue().getPosition());
-                        if(key == u.getEmail()) {
+                        if(key == u.getId()) {
                             Log.v("I AM HERE", "I AM HERE");
                             entry.getValue().setPosition(loc);
                             break;
@@ -166,7 +182,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 } else {
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
                     Log.v("FML", "FML");
-                    mMarkerList.put(u.getEmail(), marker);
+                    mMarkerList.put(u.getId(), marker);
                 }
             }
 
@@ -176,11 +192,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 double lat = u.getLat();
                 double lng = u.getLng();
                 LatLng loc = new LatLng(lat, lng);
-                if(mMarkerList.containsKey(u.getEmail())) {
+                if(mMarkerList.containsKey(u.getId())) {
                     for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
                         String key = entry.getKey();
                         Log.v("Help me", key + entry.getValue().getPosition());
-                        if(key == u.getEmail()) {
+                        if(key == u.getId()) {
                             Log.v("I AM HERE", "I AM HERE");
                             entry.getValue().setPosition(loc);
                             break;
@@ -190,7 +206,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 } else {
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
                     Log.v("FML", "FML");
-                    mMarkerList.put(u.getEmail(), marker);
+                    mMarkerList.put(u.getId(), marker);
                 }
             }
 
@@ -209,7 +225,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
     }
-
 
     @Override
     protected void onResume() {
@@ -230,13 +245,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     DatabaseReference reference = database.getReference(("Users"));
                     reference.child(user.getUid()).child("lat").setValue(mLat);
                     reference.child(user.getUid()).child("lng").setValue(mLng);
-                    if(mMarkerList.get(0) != null) Log.v("Help me", mMarkerList.get(0).getTitle());
-                    if(mMarkerList.get(1) != null) Log.v("Help me", mMarkerList.get(1).getTitle());
-                    if(mMarkerList.get(2) != null) Log.v("Help me", mMarkerList.get(2).getTitle());
-
-
-
-
 
                     //Setting location for the camera.
                     mLocation = new LatLng(mLat, mLng);
@@ -246,25 +254,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mGoogleMap.animateCamera(mCameraUpdate);
                         mFirstUpdate = false;
                     }
-
-                    //Add the marker that shows where the user is.
-
                 }
             };
         }
         registerReceiver(mBroadcastReceiver, new IntentFilter("locationUpdate"));
         sManager.registerListener(this, stepSensor, SensorManager.SENSOR_DELAY_FASTEST);
-
-
-//        this.running = true;
-//        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-//        if(countSensor != null) {
-//            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-//        } else {
-//            Toast.makeText(this, "Sensor not found!", Toast.LENGTH_SHORT).show();
-//        }
-
-
     }
 
     @Override
@@ -286,48 +280,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             permission = true;
         }
         return permission;
-    }
-
-
-
-
-    private void addUserMarker() {
-        //If the user location marker is not null then it has been set and we have to remove it.
-        if (this.mUserLocationMarker != null) {
-            this.mUserLocationMarker.remove();
-        }
-        //Add the marker to the map.
-        MarkerOptions mo = new MarkerOptions()
-                .position(this.mLocation);
-        this.mUserLocationMarker = this.mGoogleMap.addMarker(mo);
-    }
-
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
-//        super.onRequestPermissionsResult(requestCode, permissions, results);
-//        if (requestCode == 69) {
-//            if (results[0] == PackageManager.PERMISSION_GRANTED && results[1] == PackageManager.PERMISSION_GRANTED) {
-//                Intent intent = new Intent(getApplicationContext(), LocationService.class);
-//                startService(intent);
-//            } else {
-//                checkRunPermissions();
-//            }
-//        }
-//    }
-
-    public boolean setSearchDistance(float searchDistance) {
-        //Check if the search distance is negative or too large.
-        if (searchDistance <= 0) {
-            Toast.makeText(getApplicationContext(), "Search distance has to be positive.", Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (searchDistance > 1000000000) {
-            Toast.makeText(getApplicationContext(), "Cannot search for more than 1,000,000,000 metres", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        //If not then set it.
-        this.mSearchDistance = searchDistance;
-        return true;
     }
 
     @Override
@@ -370,58 +322,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-
-//    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
-//        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
-//        vectorDrawable.setBounds(0, 0, vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight());
-//        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-//        Canvas canvas = new Canvas(bitmap);
-//        vectorDrawable.draw(canvas);
-//        return BitmapDescriptorFactory.fromBitmap(bitmap);
-//    }
-
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater(); //Initialising an instance of a MenuInflater.
-        return super.onCreateOptionsMenu(menu);
-    }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putFloat("searchDistance", this.mSearchDistance);
-        outState.putDouble("lat", this.mLat);
-        outState.putDouble("lng", this.mLng);
         outState.putDouble("steps", this.steps_walked);
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
-        float[] values = event.values;
-        int value = -1;
-
-        if(values.length > 0) {
-            value = (int) values[0];
-        }
-
         if(sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             steps_walked++;
             DatabaseReference ref = database.getReference("Users").child(user.getUid()).child("steps");
             ref.setValue(steps_walked);
         }
-        Log.v("Steps", String.valueOf(steps_walked));
-
     }
+
     //Multiply steps by average height of a male (78cm). Divide by 100 to get answer in metres.
-    public float getDistanceRun(long steps) {
+    public long getDistanceRun(long steps) {
         long distance = (steps*78)/100;
         return distance;
     }
@@ -429,6 +352,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    public int calculateCaloriesBurnt(float distance) {
+        if(currentUser != null) {
+            Log.v("Weight", String.valueOf(currentUser.getWeight()));
+            double calPerMile = 0.5 * currentUser.getWeight();
+            double distanceInMiles = distance * 0.000621371;
+            Log.v("distance", String.valueOf(distanceInMiles));
+            return (int)(calPerMile*distanceInMiles);
+        }
+        return 0;
     }
 
 }

@@ -2,24 +2,25 @@ package com.example.softwareproject;
 
 public class User {
 
-    public String firstName;
-    public String lastName;
-    public String email = null;
-    public double weight = 0.0;
-    public double lat = 0.0;
-    public double lng = 0.0;
-    public double steps = 0.0;
+    private String firstName;
+    private String lastName;
+    private String email = null;
+    private double weight = 0.0;
+    private double lat = 0.0;
+    private double lng = 0.0;
+    private String id = null;
 
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, double weight) {
+    public User(String id, String firstName, String lastName, String email, double weight) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.weight = weight;
         this.lat = 0;
         this.lng = 0;
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -61,4 +62,6 @@ public class User {
     public double getLng() {
         return lng;
     }
+
+    public String getId() { return id; }
 }
