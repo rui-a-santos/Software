@@ -1,6 +1,9 @@
 package com.example.softwareproject;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private String firstName;
     private String lastName;
@@ -22,6 +25,28 @@ public class User {
         this.lng = 0;
         this.id = id;
     }
+
+    protected User(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        email = in.readString();
+        weight = in.readDouble();
+        lat = in.readDouble();
+        lng = in.readDouble();
+        id = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getFirstName() {
         return firstName;
@@ -64,4 +89,20 @@ public class User {
     }
 
     public String getId() { return id; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(email);
+        dest.writeDouble(weight);
+        dest.writeDouble(lat);
+        dest.writeDouble(lng);
+        dest.writeString(id);
+    }
 }

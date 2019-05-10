@@ -31,7 +31,6 @@ FirebaseUser user;
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         setContentView(R.layout.activity_test);
-
     }
 
     public void deleteData(){
