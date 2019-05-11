@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
@@ -73,9 +74,20 @@ public class ChatFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //Do what you need to do with listRes
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                showData(dataSnapshot);
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String s = ds.getKey();
+                    if (s.contains(mAuth.getCurrentUser().getUid())) {
+                        ChatItem ci = ds.child("messages").getValue(LastMessage.class);
+                        if (ci != null) {
+                            chatMap.put(s, ci);
+                            chatItems.add(ci);
+                            chatListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
             }
 
             @Override
@@ -120,32 +132,6 @@ public class ChatFragment extends Fragment {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-
-
-        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-            String s = ds.getKey();
-
-
-            if (s.contains(mAuth.getCurrentUser().getUid())) {
-
-
-
-
-                ChatItem ci =  getValue(ChatItem.class);
-
-
-//                ci = ds.getValue(ChatItem.class);
-                if (ci != null) {
-
-
-                    chatMap.put(s, ci);
-                }
-                chatItems.add(ci);
-                chatListAdapter.notifyDataSetChanged();
-            }
-
-
-        }
 
 
     }

@@ -56,21 +56,22 @@ public class Messaging extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = getIntent();
                 ChatItem ci = (ChatItem )intent.getSerializableExtra("ChatItem");
-                Message message;
-                if(mUser.getUid().equals(ci.getUsers().get(0))){
-                     message = new Message(ci.getUsers().get(0), ci.getUsers().get(1), emojiconEditText.getText().toString());
+                Message message = new Message();
+                if(ci.getUsers() != null) {
+                    if(mUser.getUid().equals(ci.getUsers().get(0))){
+                        message = new Message(ci.getUsers().get(0), ci.getUsers().get(1), emojiconEditText.getText().toString());
+                    }
+                    else {
+
+                        message = new Message(ci.getUsers().get(1), ci.getUsers().get(0), emojiconEditText.getText().toString());
+
+                    }
+                    ci.addMessage(message);
+                    FirebaseDatabase.getInstance().getReference("Chats/" + intent.getStringExtra("Key") +"/messages").setValue(message);
+                    emojiconEditText.setText("");
+                    emojiconEditText.requestFocus();
                 }
-                else {
 
-                     message = new Message(ci.getUsers().get(1), ci.getUsers().get(0), emojiconEditText.getText().toString());
-
-                }
-
-
-                ci.addMessage(message);
-                FirebaseDatabase.getInstance().getReference("Chats/" + intent.getStringExtra("Key") +"/messages").setValue(message);
-                emojiconEditText.setText("");
-                emojiconEditText.requestFocus();
 
             }
         });

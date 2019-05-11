@@ -60,7 +60,7 @@ public class Profile extends AppCompatActivity {
         lastName = findViewById(R.id.my_last_name);
         email = findViewById(R.id.my_email);
         weight = findViewById(R.id.my_weight);
-        profilePic = findViewById(R.id.pp);
+        profilePic = findViewById(R.id.profile_layout);
 
 
 
