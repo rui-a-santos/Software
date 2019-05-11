@@ -54,13 +54,6 @@ public class Profile extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Bundle bundle  = getIntent().getExtras();
-        if(bundle != null) {
-            String key = bundle.getString("key");
-            Log.v("HALLELUJAH", key);
-        }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         firstName = findViewById(R.id.my_first_name);
@@ -69,11 +62,22 @@ public class Profile extends AppCompatActivity {
         weight = findViewById(R.id.my_weight);
         profilePic = findViewById(R.id.pp);
 
+
+
+
+
+
+
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         userID = user.getUid();
+
+
+
+
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

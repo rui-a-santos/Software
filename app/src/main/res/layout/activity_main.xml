@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/blue"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".Login">
@@ -11,8 +11,6 @@
     <ImageView
         android:layout_width="132dp"
         android:layout_height="141dp"
-        android:layout_marginBottom="25dp"
-        android:src="@drawable/ic_fitness_center_black_24dp"
         android:contentDescription="@string/app_name" />
 
     <android.support.design.widget.TextInputLayout
@@ -21,9 +19,10 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/input_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/input_username"
+
             android:hint="@string/form_username"
             android:inputType="textEmailAddress" />
 
@@ -36,8 +35,8 @@
         <android.support.design.widget.TextInputEditText
             android:id="@+id/input_passwordFinal"
             android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
             android:hint="@string/form_password"
             android:inputType="textPassword" />
 
@@ -47,24 +46,24 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_login"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="@color/Brown"
+
         android:onClick="login"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/login"
 
         />
 
     <TextView
         android:id="@+id/forgot_password"
+        android:layout_marginBottom="40dp"
         android:layout_width="wrap_content"
+        android:focusable="true"
+        android:clickable="true"
+        android:onClick="goToReset"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="25dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:onClick="goToReset"
         android:text="@string/forgot_password"
 
         />
@@ -74,13 +73,13 @@
         android:id="@+id/sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:layout_gravity="center"
+        android:textSize="15sp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="toRegister"
         android:text="@string/create_account_text"
-        android:textSize="14sp"
-        android:textStyle="normal"
 
         />
 

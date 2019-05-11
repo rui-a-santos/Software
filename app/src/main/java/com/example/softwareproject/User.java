@@ -3,7 +3,7 @@ package com.example.softwareproject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class User implements Parcelable, java.io.Serializable{
 
     private String firstName;
     private String lastName;
