@@ -4,57 +4,63 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 
     >
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#FFFFFF"
         android:gravity="center"
-        android:background="@color/blue"
         android:orientation="vertical"
         tools:context=".SignUpActivity">
 
-
-        <Button
+<!--        <Button
+            android:id="@+id/btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn"
-            android:onClick="takeSelfie"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
+            android:background="@color/Brown"
+            android:onClick="takeSelfie"
+            android:padding="5dp"
+            android:paddingStart="5dp"
+            android:paddingLeft="10dp"
+            android:paddingEnd="5dp"
+            android:paddingRight="10dp"
+            android:text="@string/select_capture"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/select_capture" />
+            android:textColor="@color/white"
+            android:textSize="14sp" /> -->
 
         <ImageView
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/ic_launcher"
             android:id="@+id/iv"
-            android:contentDescription="TODO" />
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="25dp"
+            android:contentDescription="TODO"
+            android:onClick="takeSelfie"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_camera_alt_black_24dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_marginBottom="20dp"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/input_email"
                 android:layout_width="match_parent"
-                android:inputType="textEmailAddress"
                 android:layout_height="wrap_content"
-                android:hint="@string/form_username"/>
+                android:hint="@string/form_username"
+                android:inputType="textEmailAddress" />
         </android.support.design.widget.TextInputLayout>
-
-
-
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/input_first_name"
@@ -67,28 +73,26 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/input_last_name"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:hint="@string/form_last_name"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/input_weight"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="20dp"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:hint="@string/form_weight"
                 android:inputType="numberDecimal" />
 
@@ -96,11 +100,9 @@
         </android.support.design.widget.TextInputLayout>
 
 
-
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/input_password"
@@ -113,8 +115,7 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/re_input_password"
@@ -130,10 +131,11 @@
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_login"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:onClick="signUp"
-            android:layout_marginBottom="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/Brown"
+            android:onClick="signUp"
             android:text="@string/sign_up"
 
             />
@@ -142,30 +144,30 @@
             android:id="@+id/already_signed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:onClick="alreadySigned"
-            android:layout_gravity="center"
             android:text="@string/already_account"
+            android:layout_marginBottom="50dp"
 
             />
 
 
-
-        <TextView
+<!--        <TextView
             android:id="@+id/sign_up"
-            android:layout_marginTop="50dp"
-            android:textSize="15sp"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
             android:clickable="true"
             android:focusable="true"
             android:onClick="forgotWithSign"
-            android:layout_gravity="center"
             android:text="@string/already_account"
+            android:textSize="15sp"
+            android:textStyle="bold"
 
-            />
+            /> -->
 
 
     </LinearLayout>

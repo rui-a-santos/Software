@@ -3,6 +3,7 @@ package com.example.softwareproject;
 import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -94,8 +96,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
         this.database = FirebaseDatabase.getInstance();
+
+
+        if (database == null) {
+            database.setPersistenceEnabled(true);
+        }
         this.user = FirebaseAuth.getInstance().getCurrentUser();
 
         createStepsListener();
@@ -131,11 +137,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         floatingActionButtonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Logout", "Logout");
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MapActivity.this, Login.class);
-                startActivity(intent);
-                finish();
+                new AlertDialog.Builder(MapActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Logout")
+                        .setMessage("Are you sure you want to logout?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseAuth.getInstance().signOut();
+                                Intent intent = new Intent(MapActivity.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
             }
         });
         floatingActionButtonCentre.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +188,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void createStepsListener() {
         DatabaseReference steps = this.database.getReference("Users").child(user.getUid()).child("steps");
+        steps.keepSynced(true);
         steps.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -179,16 +198,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
                 if(post != 0) {
                     Log.v("Database steps:", String.valueOf(post));
-                    if(post > steps_walked) {
-                        steps_walked = post;
-                    }
+                    steps_walked = post;
+
                     long distanceRun = getDistanceRun(steps_walked);
-                    stepsTextView.setText(steps_walked + " Steps Walked");
-                    distanceTextView.setText(distanceRun + " Metres Travelled");
+                    stepsTextView.setText(steps_walked + " steps walked");
+                    distanceTextView.setText(distanceRun + " metres travelled");
                     if(calculateCaloriesBurnt(distanceRun) == 0) {
                         caloriesTextView.setText("Please begin walking to calculate calories.");
                     }
-                    caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " Calories Burnt");
+                    caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " calories burnt");
                 }
             }
 
@@ -196,40 +214,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onCancelled(DatabaseError databaseError) {
                 System.out.println("The read failed: " + databaseError.getCode());
                 long distanceRun = getDistanceRun(steps_walked);
-                stepsTextView.setText("Steps walked : " +  steps_walked);
-                stepsTextView.setText(steps_walked + " Steps Walked");
-                distanceTextView.setText(distanceRun + " Metres Travelled");
-                caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " Calories Burnt");
+                stepsTextView.setText("Steps walked: " +  steps_walked);
+                stepsTextView.setText(steps_walked + " steps walked");
+                distanceTextView.setText(distanceRun + " metres travelled");
+                caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " calories burnt");
             }
         });
     }
 
     private void createUserListener() {
         DatabaseReference ref = this.database.getReference("Users");
+        ref.keepSynced(true);
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                User u = dataSnapshot.getValue(User.class);
-                double lat = u.getLat();
-                double lng = u.getLng();
-                if(lat == 0 && lng == 0) return;
-                LatLng loc = new LatLng(lat, lng);
-                if(mMarkerList.containsKey(u.getId())) {
-                    for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
-                        String key = entry.getKey();
-                        Log.v("Help me", key + entry.getValue().getPosition());
-                        if(key == u.getId()) {
-                            Log.v("I AM HERE", "I AM HERE");
-                            entry.getValue().setPosition(loc);
-                            break;
-                        }
-                        // do something with key and/or tab
-                    }
-                } else {
-                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
-                    Log.v("FML", "FML");
-                    mMarkerList.put(u.getId(), marker);
-                }
+//                User u = dataSnapshot.getValue(User.class);
+//                double lat = u.getLat();
+//                double lng = u.getLng();
+//                if(lat == 0 && lng == 0) return;
+//                LatLng loc = new LatLng(lat, lng);
+//                if(mMarkerList.containsKey(u.getId())) {
+//                    for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
+//                        String key = entry.getKey();
+//                        Log.v("Help me", key + entry.getValue().getPosition());
+//                        if(key == u.getId()) {
+//                            Log.v("I AM HERE", "I AM HERE");
+//                            entry.getValue().setPosition(loc);
+//                            break;
+//                        }
+//                        // do something with key and/or tab
+//                    }
+//                } else {
+//                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
+//                    Log.v("FML", "FML");
+//                    mMarkerList.put(u.getId(), marker);
+//                }
             }
 
             @Override
@@ -333,6 +352,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         //Set the field to the map.
         this.mGoogleMap = googleMap;
+        this.mGoogleMap.setOnMarkerClickListener(this);
         this.mGoogleMap.setOnMapLoadedCallback(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -352,6 +372,19 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onInfoWindowClick(Marker marker) {
                 //Loop through the marker list to find the marker clicked.
+                for(Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
+                    String key = entry.getKey();
+                    Marker m = entry.getValue();
+                    Log.v("MarkerID", marker.getId());
+                    Log.v("Marker Values", m.getId());
+                    if(marker.getId().equals(m.getId())) {
+                        Intent intent = new Intent(MapActivity.this, Profile.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("key", key);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }
 
             }
         });
@@ -371,6 +404,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
         return false;
     }
 
@@ -411,6 +445,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             return (int)(calPerMile*distanceInMiles);
         }
         return 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
 }

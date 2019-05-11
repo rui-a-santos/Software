@@ -11,32 +11,34 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
 
     <dist:module dist:instant="true" />
 
-
-
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Leaderboards"
+            android:label="@string/title_activity_leaderboards"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".Chat"></activity>
+
+        <activity android:name=".Chat" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="Map"></activity>
-        <activity android:name=".Profile" />
+            android:label="Map"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Profile" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ResetPassword" />
         <activity
             android:name=".TestActivity"
@@ -44,22 +46,21 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login"
-            android:label="@string/title_activity_login" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-
-
             </intent-filter>
+        </activity>
+        <activity android:name=".SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        </activity>
-        <activity android:name=".SignUpActivity">
-        </activity>
         <service
             android:name=".LocationService"
             android:enabled="true"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
 
 </manifest>
