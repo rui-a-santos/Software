@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -64,62 +65,50 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_layout"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
+
             <TextView
-                android:id="@+id/input_weight"
+                android:id="@+id/rank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="40dp"
-                android:text="@string/form_weight"
-                android:textAlignment="center" />
 
+                android:textAlignment="center"
+                tools:text="rank" />
 
             <TextView
-                android:id="@+id/my_first_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-                android:text="@string/form_first_name"
-
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/my_last_name"
+                android:id="@+id/steps_taken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:text="@string/form_last_name"
 
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:text="steps taken" />
 
             <TextView
-                android:id="@+id/my_email"
+                android:id="@+id/distance_walked"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:text="@string/confirm_email"
 
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:text="metres walked" />
 
             <TextView
-                android:id="@+id/my_weight"
+                android:id="@+id/calories_burned"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
                 android:text="@string/form_weight"
 
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                tools:text="calories burned" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
-
-                android:text="@string/form_weight"
-
-                android:textAlignment="center" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
