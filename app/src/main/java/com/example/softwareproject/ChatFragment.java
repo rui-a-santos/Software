@@ -79,22 +79,11 @@ public class ChatFragment extends Fragment {
                 //Do what you need to do with listRes
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String s = ds.getKey();
-                    if (s.contains(mAuth.getCurrentUser().getUid())) {
-                        ChatItem ci = ds.child("messages").getValue(LastMessage.class);
-                        if (ci != null) {
-                            chatMap.put(s, ci);
-                            chatItems.add(ci);
-                            chatListAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
+                showData(dataSnapshot);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
@@ -146,13 +135,13 @@ public class ChatFragment extends Fragment {
 
                 ArrayList<Message> messages = new ArrayList<Message>();
                 for (DataSnapshot ds1 : ds.child("messages").getChildren()){
-                        Date messageTime = ds1.child("messageTime").getValue(Date.class);
-                        String content = ds1.child("content").getValue(String.class);
+                    Date messageTime = ds1.child("messageTime").getValue(Date.class);
+                    String content = ds1.child("content").getValue(String.class);
 
-                        User recipient = ds1.child("recipient").getValue(User.class);
-                        User sender = ds1.child("recipient").getValue(User.class);
-                        Message message = new Message(sender, recipient, content, messageTime);
-                        messages.add(message);
+                    User recipient = ds1.child("recipient").getValue(User.class);
+                    User sender = ds1.child("recipient").getValue(User.class);
+                    Message message = new Message(sender, recipient, content, messageTime);
+                    messages.add(message);
 
                 }
                 ArrayList<User> users = new ArrayList<User>();
