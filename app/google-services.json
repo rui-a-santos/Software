@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "938100930656",
+    "firebase_url": "https://simplyfitproject.firebaseio.com",
+    "project_id": "simplyfitproject",
+    "storage_bucket": "simplyfitproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:938100930656:android:b6d83f49d0c6f09b",
+        "android_client_info": {
+          "package_name": "com.example.softwareproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "938100930656-iqooi2riajvdrnkad0eghlis0q9t8n90.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMgJujuFZLXD2VEKmF9QtxnZTfWMI4kB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "938100930656-iqooi2riajvdrnkad0eghlis0q9t8n90.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

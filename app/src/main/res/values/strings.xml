@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">SoftwareProject</string>
+    <string name="form_username">Email Address</string>
+    <string name="form_password">Password</string>
+    <string name="login">Login</string>
+    <string name="create_account_text">No account yet? Create one now</string>
+    <string name="title_activity_login">SimplyFit</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="form_first_name">First Name</string>
+    <string name="form_last_name">Last Name</string>
+    <string name="re_form_password">Confirm your password</string>
+    <string name="lbs">Lbs</string>
+    <string name="pick_weight">Pick Weight</string>
+    <string name="already_account">Have you already got an account? Click here</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="form_weight">Enter your weight in Lbs</string>
+    <string name="back_login">Back to login</string>
+    <string name="confirm_email">Confirm Email Address</string>
+    <string name="reset">Reset</string>
+    <string name="delete_account">Delete account</string>
+    <string name="log_out">Logout</string>
+    <string name="select_capture">Select or Capture Image</string>
+    <string name="view_profile">View your profile</string>
+    <string name="input">Input</string>
+    <string name="chat">Go on the chat!</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCAhEEhGNnaQGbynZfdzD8NPWhqt0RpTs4</string>
+    <string name="title_activity_leaderboards">Leaderboards</string>
+
+    <string name="gcFrag">Group Chats</string>
+    <string name="chatFrag">Your Chats</string>
+</resources>
