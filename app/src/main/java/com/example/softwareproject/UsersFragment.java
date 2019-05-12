@@ -102,7 +102,9 @@ public class UsersFragment extends Fragment {
                         ArrayList<Message> messages = new ArrayList<>();
 
                         Message message = new Message(currentUser, selectedUser, "Hi!");
+                        Message message1 = new Message(currentUser, selectedUser, "Hi!");
                         messages.add(message);
+                        messages.add(message1);
                         ArrayList<User> users = new ArrayList<User>();
                         users.add(currentUser);
                         users.add(selectedUser);
@@ -111,8 +113,6 @@ public class UsersFragment extends Fragment {
 
                         reference = FirebaseDatabase.getInstance().getReference();
                         reference.child("Chats").child(chatKey).setValue(ci);
-//                        reference.child("Chats").child(chatKey).child("Person2").setValue(selectedUser);
-//                        reference.child("Chats").child(chatKey).child("Messages").setValue(messages);
                     }
 
                     @Override
