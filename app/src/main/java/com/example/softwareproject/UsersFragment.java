@@ -94,11 +94,11 @@ public class UsersFragment extends Fragment {
                 reference.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        DatabaseReference reference;
+                        final DatabaseReference reference;
                         currentUser = dataSnapshot.getValue(User.class);
 
 
-                        String chatKey = currentUser.getId() + selectedUser.getId();
+                        final String chatKey = currentUser.getId() + selectedUser.getId();
                         ArrayList<Message> messages = new ArrayList<>();
 
                         Message message = new Message(currentUser, selectedUser, "Hi! Welcome to our chat.");
@@ -106,10 +106,10 @@ public class UsersFragment extends Fragment {
                         ArrayList<User> users = new ArrayList<User>();
                         users.add(currentUser);
                         users.add(selectedUser);
-                        ChatItem ci = new ChatItem(users, messages);
+                        final ChatItem ci = new ChatItem(users, messages);
 
 
-                        reference = FirebaseDatabase.getInstance().getReference("Chats");
+                        reference = FirebaseDatabase.getInstance().getReference().child("Chats");
 
                         reference.addValueEventListener(new ValueEventListener() {
                             @Override
@@ -118,6 +118,8 @@ public class UsersFragment extends Fragment {
                                     if (ds.getKey().equals(currentUser.getId()+selectedUser.getId())||ds.getKey().equals(selectedUser.getId()+currentUser.getId())){
                                         Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
                                         toast.show();
+                                    }else{
+                                        reference.child(chatKey).setValue(ci);
                                     }
 
                                 }
@@ -131,7 +133,7 @@ public class UsersFragment extends Fragment {
 
 
 
-                        reference.child("Chats").child(chatKey).setValue(ci);
+
                     }
 
                     @Override
