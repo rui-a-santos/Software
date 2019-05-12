@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -100,17 +101,36 @@ public class UsersFragment extends Fragment {
                         String chatKey = currentUser.getId() + selectedUser.getId();
                         ArrayList<Message> messages = new ArrayList<>();
 
-                        Message message = new Message(currentUser, selectedUser, "Hi!");
-                        Message message1 = new Message(currentUser, selectedUser, "Hi!");
+                        Message message = new Message(currentUser, selectedUser, "Hi! Welcome to our chat.");
                         messages.add(message);
-                        messages.add(message1);
                         ArrayList<User> users = new ArrayList<User>();
                         users.add(currentUser);
                         users.add(selectedUser);
                         ChatItem ci = new ChatItem(users, messages);
 
 
-                        reference = FirebaseDatabase.getInstance().getReference();
+                        reference = FirebaseDatabase.getInstance().getReference("Chats");
+
+                        reference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                    if (ds.getKey().equals(currentUser.getId()+selectedUser.getId())||ds.getKey().equals(selectedUser.getId()+currentUser.getId())){
+                                        Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    }
+
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
                         reference.child("Chats").child(chatKey).setValue(ci);
                     }
 
