@@ -133,7 +133,7 @@ public class UsersFragment extends Fragment {
 
                         reference = FirebaseDatabase.getInstance().getReference("Chats");
 
-                        reference.addValueEventListener(new ValueEventListener() {
+                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
