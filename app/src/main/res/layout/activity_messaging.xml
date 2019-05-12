@@ -39,17 +39,21 @@
         app:emojiconSize="28sp"
         />
 
-    <ListView
-        android:id="@+id/list_of_message"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/emojicon_edit_text"
-        android:dividerHeight="16dp"
-        android:divider="@android:color/transparent"
-        android:layout_marginBottom="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll"
-        />
+
+        <ListView
+            android:id="@+id/list_of_message"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/emojicon_edit_text"
+            android:dividerHeight="16dp"
+            android:divider="@android:color/transparent"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stackFromBottom="true"
+
+            android:scrollbars="vertical"
+            />
+
+
 </RelativeLayout>
