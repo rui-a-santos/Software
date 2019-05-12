@@ -77,6 +77,7 @@ public class ChatFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
+                chatItems.clear();
                 showData(dataSnapshot);
             }
 
