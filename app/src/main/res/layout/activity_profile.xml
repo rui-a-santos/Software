@@ -43,21 +43,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"
-                android:text="Placeholder"
+                android:text="Loading..."
                 android:textColor="#fff"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/user_profile_short_bio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_profile_name"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="12dp"
-                android:text="Placeholder"
-                android:textColor="#fff"
-                android:textSize="14sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/user_profile_short_bio"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/user_profile_name"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginTop="12dp"-->
+                <!--android:text="Placeholder"-->
+                <!--android:textColor="#fff"-->
+                <!--android:textSize="14sp" />-->
         </RelativeLayout>
 
 
@@ -70,14 +70,14 @@
 
 
             <TextView
-                android:id="@+id/rank"
+                android:id="@+id/steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="40dp"
 
                 android:textAlignment="center"
-                tools:text="rank" />
+                tools:text="loading..." />
 
             <TextView
                 android:id="@+id/steps_taken"
@@ -87,7 +87,7 @@
                 android:text="@string/form_last_name"
 
                 android:textAlignment="center"
-                tools:text="steps taken" />
+                tools:text="loading..." />
 
             <TextView
                 android:id="@+id/distance_walked"
@@ -97,7 +97,7 @@
                 android:text="@string/confirm_email"
 
                 android:textAlignment="center"
-                tools:text="metres walked" />
+                tools:text="loading..." />
 
             <TextView
                 android:id="@+id/calories_burned"
@@ -107,7 +107,7 @@
                 android:text="@string/form_weight"
 
                 android:textAlignment="center"
-                tools:text="calories burned" />
+                tools:text="loading..." />
 
         </LinearLayout>
     </RelativeLayout>
