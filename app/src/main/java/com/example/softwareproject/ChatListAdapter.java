@@ -37,7 +37,7 @@ public ChatListAdapter(Context context, ArrayList<ChatItem> chatList){
 
         TextView name = (TextView) view.findViewById(R.id.chatPerson);
 
-        if (user.getUid()==chatItem.getUsers().get(0).getId()){
+        if (user.getUid().equals(chatItem.getUsers().get(0).getId())){
 
             name.setText(chatItem.getUsers().get(1).getFirstName() + " "+ chatItem.getUsers().get(1).getLastName());
         }
