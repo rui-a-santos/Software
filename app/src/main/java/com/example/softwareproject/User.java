@@ -12,9 +12,6 @@ public class User implements Parcelable, java.io.Serializable{
     private double lat = 0.0;
     private double lng = 0.0;
     private String id = null;
-    private int steps = 0;
-    private int metresWalked = 0;
-    private int caloriesBurned = 0;
 
 
     public User() {}
@@ -24,13 +21,9 @@ public class User implements Parcelable, java.io.Serializable{
         this.lastName = lastName;
         this.email = email;
         this.weight = weight;
-        this.id = id;
-
         this.lat = 0;
         this.lng = 0;
-        this.steps = 0;
-        this.metresWalked = 0;
-        this.caloriesBurned = 0;
+        this.id = id;
     }
 
     protected User(Parcel in) {
@@ -41,9 +34,6 @@ public class User implements Parcelable, java.io.Serializable{
         lat = in.readDouble();
         lng = in.readDouble();
         id = in.readString();
-        steps = in.readInt();
-        metresWalked = in.readInt();
-        caloriesBurned = in.readInt();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -100,9 +90,6 @@ public class User implements Parcelable, java.io.Serializable{
 
     public String getId() { return id; }
 
-    public int getSteps() { return this.steps; }
-
-
     @Override
     public int describeContents() {
         return 0;
@@ -117,8 +104,5 @@ public class User implements Parcelable, java.io.Serializable{
         dest.writeDouble(lat);
         dest.writeDouble(lng);
         dest.writeString(id);
-        dest.writeInt(steps);
-        dest.writeInt(metresWalked);
-        dest.writeInt(caloriesBurned);
     }
 }

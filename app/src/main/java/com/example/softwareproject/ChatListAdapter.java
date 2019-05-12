@@ -29,10 +29,9 @@ public ChatListAdapter(Context context, ArrayList<ChatItem> chatList){
         ChatItem chatItem = chatList.get(i);
 
         TextView name = (TextView) view.findViewById(R.id.chatPerson);
-        if(chatItem.getUsers() != null) name.setText(chatItem.getUsers().get(1).getFirstName());
-
+        name.setText(chatItem.getUsers().get(1).getFirstName());
         TextView date = (TextView) view.findViewById(R.id.chatDate);
-        if(chatItem.getLastMessage() != null)  date.setText(chatItem.getLastMessage().toString());
+        date.setText(chatItem.getLastMessage().toString());
         notifyDataSetChanged();   //Notify data set changed
         return view;
 

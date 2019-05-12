@@ -12,123 +12,79 @@
     android:orientation="vertical"
     android:id="@+id/base">
 
-
-    <TextView
-        android:id="@+id/distance"
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#DA4336"
-        android:text="0 metres"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:typeface="monospace"
-        map:fontFamily="sans-serif" />
+        android:layout_weight=".2"
+        android:background="#868B8A"
+        android:baselineAligned="false"
+        android:gravity="top">
 
-    <TextView
-        android:id="@+id/rank"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#DA4336"
-        android:text="0 steps taken"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:typeface="monospace"
-        map:fontFamily="sans-serif" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/calories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#DA4336"
-        android:paddingBottom="3dp"
-        android:text="0 calories burned"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:typeface="monospace"
-        map:fontFamily="sans-serif" />
+            <TextView
+                android:id="@+id/steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="#00696565"
+                android:fontFamily="sans-serif"
+                android:text="0 Steps Taken"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                map:fontFamily="sans-serif" />
+        </TableRow>
 
-        <!--<TableLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_weight=".2"-->
-        <!--android:background="#868B8A"-->
-        <!--android:baselineAligned="false"-->
-        <!--android:gravity="top">-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1">-->
+            <TextView
+                android:id="@+id/distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="0 Metres"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                map:fontFamily="sans-serif" />
+        </TableRow>
 
-            <!--<TextView-->
-                <!--android:id="@+id/steps"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="#00696565"-->
-                <!--android:fontFamily="sans-serif"-->
-                <!--android:text="0 Steps Taken"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textAllCaps="false"-->
-                <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1"-->
-                <!--android:textColor="#000000"-->
-                <!--android:textSize="20sp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:typeface="monospace"-->
-                <!--map:fontFamily="sans-serif" />-->
-        <!--</TableRow>-->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1">-->
+            <TextView
+                android:id="@+id/calories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="0 Calories Burned"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                map:fontFamily="sans-serif" />
+        </TableRow>
 
-            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
-                <!--&lt;!&ndash;android:id="@+id/distance"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:text="0 Metres"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textAlignment="center"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textColor="#000000"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textSize="20sp"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:textStyle="bold"&ndash;&gt;-->
-                <!--&lt;!&ndash;android:typeface="monospace"&ndash;&gt;-->
-                <!--&lt;!&ndash;map:fontFamily="sans-serif" />&ndash;&gt;-->
-        <!--</TableRow>-->
-
-        <!--<TableRow-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1">-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/calories"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_weight="1"-->
-                <!--android:text="0 Calories Burned"-->
-                <!--android:textAlignment="center"-->
-                <!--android:textColor="#000000"-->
-                <!--android:textSize="20sp"-->
-                <!--android:textStyle="bold"-->
-                <!--android:typeface="monospace"-->
-                <!--map:fontFamily="sans-serif" />-->
-        <!--</TableRow>-->
-
-    <!--</TableLayout>-->
+    </TableLayout>
 
 
     <FrameLayout
@@ -223,3 +179,5 @@
 
 
 </LinearLayout>
+
+
