@@ -1,6 +1,5 @@
 package com.example.softwareproject;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +18,12 @@ public class Message implements  java.io.Serializable{
         this.messageTime = Calendar.getInstance().getTime();
     }
 
+    public Message(User sender, User recipient, String content, Date messageTime) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.content = content;
+        this.messageTime = messageTime;
+    }
 
     public User getSender() {
         return sender;

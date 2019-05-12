@@ -16,7 +16,7 @@ private ArrayList<User> users = null;
         this.messages = messages;
     }
 
-    public ChatItem(ArrayList<User> users,  ArrayList<Message> messages) {
+    public ChatItem(ArrayList<User> users, ArrayList<Message> messages) {
         this.users = users;
         this.messages = messages;
         this.lastMessage = messages.get(messages.size()-1).getMessageTime();

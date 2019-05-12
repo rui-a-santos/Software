@@ -24,25 +24,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Messaging"></activity>
+        <activity
+            android:name=".Leaderboards"
+            android:label="@string/title_activity_leaderboards"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
+        <activity android:name=".Messaging"></activity>
+        <activity android:name=".Chat" android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MapActivity"
             android:label="Map"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Profile" />
+        <activity android:name=".Profile" android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ResetPassword" />
-        <activity android:name=".Chat" />
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Login"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +54,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".LocationService"
