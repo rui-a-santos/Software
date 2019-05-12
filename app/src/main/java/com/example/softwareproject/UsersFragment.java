@@ -110,7 +110,7 @@ public class UsersFragment extends Fragment {
                 String userid = user.getUid();
                 DatabaseReference reference;
                 reference = FirebaseDatabase.getInstance().getReference("Users");
-                reference.child(userid).addValueEventListener(new ValueEventListener() {
+                reference.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final DatabaseReference reference;
