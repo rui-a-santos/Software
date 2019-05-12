@@ -32,6 +32,7 @@ public class Profile extends AppCompatActivity {
     private TextView userDistanceWalked;
     private TextView userCaloriesBurned;
     private ImageView profilePic;
+    private TextView userName;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -49,6 +50,7 @@ public class Profile extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        userName = findViewById(R.id.user_profile_name);
         userRank = findViewById(R.id.rank);
         userSteps = findViewById(R.id.steps_taken);
         userDistanceWalked = findViewById(R.id.distance_walked);
