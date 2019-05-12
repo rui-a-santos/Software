@@ -35,6 +35,7 @@ public class UsersFragment extends Fragment {
     private User currentUser = null;
     private DatabaseReference myRef;
     private boolean chatExists = false;
+    private ArrayList<String> chatKeys;
     ArrayList<User> listUser;
 
 
@@ -60,6 +61,7 @@ public class UsersFragment extends Fragment {
         this.userList = view.findViewById(R.id.list_users);
         this.userListAdapter = new UserListAdapter(getContext(), listUser);
         userList.setAdapter(userListAdapter);
+        this.chatKeys = new ArrayList<String>();
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -72,6 +74,23 @@ public class UsersFragment extends Fragment {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 showData(dataSnapshot);
+
+                myRef = mFirebaseDatabase.getReference("/Chats");
+                myRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                            String key = ds.getKey();
+                            chatKeys.add(key);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -91,7 +110,7 @@ public class UsersFragment extends Fragment {
                 String userid = user.getUid();
                 DatabaseReference reference;
                 reference = FirebaseDatabase.getInstance().getReference("Users");
-                reference.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
+                reference.child(userid).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         final DatabaseReference reference;
@@ -108,6 +127,9 @@ public class UsersFragment extends Fragment {
                         users.add(selectedUser);
                         final ChatItem ci = new ChatItem(users, messages);
 
+                        if(chatKeys.contains(currentUser.getId() + selectedUser.getId())||chatKeys.contains(selectedUser.getId() + currentUser.getId())){
+                            chatExists = true;
+                        }
 
                         reference = FirebaseDatabase.getInstance().getReference("Chats");
 
@@ -129,7 +151,9 @@ public class UsersFragment extends Fragment {
                             public void onCancelled(@NonNull DatabaseError databaseError) {
 
                             }
+
                         });
+
 
                         if (chatExists) {
                             Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
@@ -170,5 +194,9 @@ public class UsersFragment extends Fragment {
             }
 
         }
+
+
+
+
     }
 }
