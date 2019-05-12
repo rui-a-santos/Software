@@ -141,12 +141,8 @@ public class UsersFragment extends Fragment {
 
                     }
                 });
-
-
             }
         });
-
-
     }
 
     private void showData(DataSnapshot dataSnapshot) {

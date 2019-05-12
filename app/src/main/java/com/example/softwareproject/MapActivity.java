@@ -272,8 +272,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Log.v("Help me", key + entry.getValue().getPosition());
                         if(key == u.getId()) {
                             Log.v("I AM HERE", "I AM HERE");
-                            entry.getValue().setPosition(loc);
-                            break;
+                            Location currentLocation = new Location("currentLocation");
+                            currentLocation.setLatitude(mLat);
+                            currentLocation.setLongitude(mLng);
+
+                            Location userLocation = new Location("userLocation");
+                            userLocation.setLatitude(u.getLat());
+                            userLocation.setLongitude(u.getLng());
+
+                            float distance = currentLocation.distanceTo(userLocation);
+                            Log.v("Distance to " + u.getFirstName(), String.valueOf(distance));
+                            //Only set the marker to visible if the user is within 10 miles.
+                            if(distance < 16093.4) {
+                                entry.getValue().setVisible(true);
+                                entry.getValue().setPosition(loc);
+                                break;
+                            } else {
+                                entry.getValue().setVisible(false);
+                                break;
+                            }
                         }
 
                         // do something with key and/or tab
