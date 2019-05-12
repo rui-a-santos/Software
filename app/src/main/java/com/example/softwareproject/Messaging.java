@@ -79,7 +79,7 @@ public class Messaging extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
-
+    messages.clear();
 
                 for (DataSnapshot ds1 : ds.getChildren()) {
                     Date messageTime = ds1.child("messageTime").getValue(Date.class);
@@ -89,7 +89,7 @@ public class Messaging extends AppCompatActivity {
                     User sender = ds1.child("recipient").getValue(User.class);
                     Message message = new Message(sender, recipient, content, messageTime);
                     messages.add(message);
-
+                    messageAdapter.notifyDataSetChanged();
                 }
 
 
@@ -99,6 +99,7 @@ public class Messaging extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 
