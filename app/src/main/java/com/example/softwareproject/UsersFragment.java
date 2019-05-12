@@ -96,7 +96,6 @@ public class UsersFragment extends Fragment {
                         DatabaseReference reference;
                         currentUser = dataSnapshot.getValue(User.class);
 
-
                         String chatKey = currentUser.getId() + selectedUser.getId();
                         ArrayList<Message> messages = new ArrayList<>();
 
@@ -119,12 +118,8 @@ public class UsersFragment extends Fragment {
 
                     }
                 });
-
-
             }
         });
-
-
     }
 
     private void showData(DataSnapshot dataSnapshot) {
