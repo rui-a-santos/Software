@@ -130,30 +130,30 @@ public class UsersFragment extends Fragment {
                         if(chatKeys.contains(currentUser.getId() + selectedUser.getId())||chatKeys.contains(selectedUser.getId() + currentUser.getId())){
                             chatExists = true;
                         }
+else {
+                            reference = FirebaseDatabase.getInstance().getReference("Chats");
 
-                        reference = FirebaseDatabase.getInstance().getReference("Chats");
+                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                        if (ds.getKey().equals(currentUser.getId() + selectedUser.getId()) || ds.getKey().equals(selectedUser.getId() + currentUser.getId())) {
+                                            chatExists = true;
+                                        } else {
+                                            chatExists = false;
+                                            reference.child(chatKey).setValue(ci);
+                                        }
 
-                        reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                    if (ds.getKey().equals(currentUser.getId() + selectedUser.getId()) || ds.getKey().equals(selectedUser.getId() + currentUser.getId())) {
-                                        chatExists = true;
-                                    } else {
-                                        chatExists = false;
-                                        reference.child(chatKey).setValue(ci);
                                     }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
 
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-
-                        });
-
+                            });
+                        }
 
                         if (chatExists) {
                             Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
