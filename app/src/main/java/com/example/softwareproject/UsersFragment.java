@@ -34,7 +34,7 @@ public class UsersFragment extends Fragment {
     private FirebaseAuth mAuth;
     private User currentUser = null;
     private DatabaseReference myRef;
-
+    private boolean chatExists = false;
     ArrayList<User> listUser;
 
 
@@ -109,16 +109,16 @@ public class UsersFragment extends Fragment {
                         final ChatItem ci = new ChatItem(users, messages);
 
 
-                        reference = FirebaseDatabase.getInstance().getReference().child("Chats");
+                        reference = FirebaseDatabase.getInstance().getReference("Chats");
 
                         reference.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                                    if (ds.getKey().equals(currentUser.getId()+selectedUser.getId())||ds.getKey().equals(selectedUser.getId()+currentUser.getId())){
-                                        Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
-                                        toast.show();
-                                    }else{
+                                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                    if (ds.getKey().equals(currentUser.getId() + selectedUser.getId()) || ds.getKey().equals(selectedUser.getId() + currentUser.getId())) {
+                                        chatExists = true;
+                                    } else {
+                                        chatExists = false;
                                         reference.child(chatKey).setValue(ci);
                                     }
 
@@ -130,8 +130,10 @@ public class UsersFragment extends Fragment {
 
                             }
                         });
-
-
+                        if (!chatExists) {
+                            Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
 
 
                     }
