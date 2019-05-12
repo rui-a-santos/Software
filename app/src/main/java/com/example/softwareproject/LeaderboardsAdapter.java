@@ -19,10 +19,14 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView textView;
+        public TextView rowName;
+        public TextView rowRank;
+        public TextView rowSteps;
         public MyViewHolder(View v) {
             super(v);
-            textView = v.findViewById(R.id.rowName);
+            rowName = v.findViewById(R.id.rowName);
+            rowRank = v.findViewById(R.id.rowRank);
+            rowSteps = v.findViewById(R.id.rowSteps);
         }
     }
 
@@ -52,7 +56,9 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
 
         Log.v("i wanna sleep", "i wanna sleep");
         User user = mUsers.get(position);
-        holder.textView.setText(user.getFirstName() + " " + user.getLastName() + " - "  + (position+1));
+        holder.rowRank.setText(String.valueOf(position + 1));
+        holder.rowName.setText(user.getFirstName() + " " + user.getLastName());
+        holder.rowSteps.setText(String.valueOf(user.getSteps()));
 
 
     }
