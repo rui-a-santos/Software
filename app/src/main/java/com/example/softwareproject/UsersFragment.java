@@ -130,7 +130,8 @@ public class UsersFragment extends Fragment {
 
                             }
                         });
-                        if (!chatExists) {
+
+                        if (chatExists) {
                             Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
                             toast.show();
                         }
