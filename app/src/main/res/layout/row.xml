@@ -7,25 +7,28 @@
 
     <TextView
         android:id="@+id/rowRank"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="1"
-        android:textSize="30" />
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/rowName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Placeholder"
-        android:textSize="30" />
+        android:textAlignment="center"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/rowSteps"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="500"
-        android:textSize="30" />
+        android:textAlignment="center"
+        android:textSize="20sp" />
 </LinearLayout>

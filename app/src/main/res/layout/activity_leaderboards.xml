@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A RecyclerView with some commonly used attributes -->
-
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="25sp">
 
-    </RelativeLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rank"
+            android:id="@+id/rank"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/name"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Steps"
+            android:id="@+id/steps"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical" >
+        android:scrollbars="vertical"
+        android:paddingTop="50sp">
     </android.support.v7.widget.RecyclerView>
-
 </RelativeLayout>
-
-
-
-    
