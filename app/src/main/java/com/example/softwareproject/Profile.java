@@ -60,7 +60,7 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //add Firebase Database stuff
         FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = mFirebaseDatabase.getReference("Users");
+        DatabaseReference myRef = mFirebaseDatabase.getReference();
         FirebaseUser user = mAuth.getCurrentUser();
         if(userID == null) {
             userID = user.getUid();
@@ -127,7 +127,7 @@ public class Profile extends AppCompatActivity {
 //                uInfo.setWeight(ds.child(userID).getValue(User.class).getWeight()); //set the name
 //            }
             User uInfo;
-            if(ds.child(userID).getValue() != null) {
+            if(ds.child(userID).getValue() != null && !(ds.child(userID).getValue() instanceof Long)) {
                 uInfo = ds.child(userID).getValue(User.class);
                 userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
                 userRank.setText(uInfo.getFirstName());
