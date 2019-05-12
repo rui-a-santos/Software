@@ -30,8 +30,8 @@ public class Leaderboards extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private List<String> userKeys = new ArrayList();
-    private List<User> users = new ArrayList<>();
+    private ArrayList<String> userKeys = new ArrayList();
+    private ArrayList<User> users = new ArrayList<>();
     private FirebaseUser user;
 
 
@@ -53,6 +53,8 @@ public class Leaderboards extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
 
+
+
         DatabaseReference stepsRef = database.getReference("Steps");
 
         stepsRef.orderByValue().addValueEventListener(new ValueEventListener() {
@@ -61,8 +63,9 @@ public class Leaderboards extends AppCompatActivity {
                 userKeys.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     userKeys.add(ds.getKey());
-                    Log.v("leaderboard", userKeys.toString());
                 }
+                Log.v("leaderboard", userKeys.toString());
+
 
             }
 
@@ -71,19 +74,44 @@ public class Leaderboards extends AppCompatActivity {
 
             }
         });
+
 
         DatabaseReference usersRef = database.getReference("Users");
-        usersRef.addValueEventListener(new ValueEventListener() {
+        usersRef.addChildEventListener(new ChildEventListener() {
+
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 for(int i = 0; i < userKeys.size(); i++) {
-                    for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                        if(ds.getKey() == userKeys.get(i)) {
-                            User user = ds.getValue(User.class);
+                    Log.v("number " + i, userKeys.get(i));
+                        if(dataSnapshot.getKey().equals(userKeys.get(i))) {
+                            User user = dataSnapshot.getValue(User.class);
                             users.add(user);
                         }
-                    }
                 }
+
+                if(mAdapter == null) {
+                    mAdapter = new LeaderboardsAdapter(users);
+                    Log.v("plshelp", users.toString());
+                    recyclerView.setAdapter(mAdapter);
+                } else {
+                    ((LeaderboardsAdapter)mAdapter).updateData(users);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override
@@ -91,11 +119,33 @@ public class Leaderboards extends AppCompatActivity {
 
             }
         });
+//        usersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                users.clear();
+//                for(int i = 0; i < userKeys.size(); i++) {
+//                        if(dataSnapshot.getKey() == userKeys.get(i)) {
+//                            User user = dataSnapshot.getValue(User.class);
+//                            users.add(user);
+//                        }
+//                }
+//                if(mAdapter == null) {
+//                    Log.v("plshelp", users.toString());
+//                    mAdapter = new LeaderboardsAdapter(users);
+//                    recyclerView.setAdapter(mAdapter);
+//                }
+//                mAdapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
 
         // specify an adapter (see also next example)
-        mAdapter = new LeaderboardsAdapter(users);
-        recyclerView.setAdapter(mAdapter);
+
     }
     // ...
 }

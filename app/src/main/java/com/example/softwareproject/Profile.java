@@ -60,7 +60,7 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         //add Firebase Database stuff
         FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = mFirebaseDatabase.getReference();
+        DatabaseReference myRef = mFirebaseDatabase.getReference("Users");
         FirebaseUser user = mAuth.getCurrentUser();
         if(userID == null) {
             userID = user.getUid();

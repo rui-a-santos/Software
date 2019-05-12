@@ -3,13 +3,16 @@ package com.example.softwareproject;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapter.MyViewHolder> {
-    private List<User> mUsers;
+    private ArrayList<User> mUsers;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -17,15 +20,19 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView textView;
-        public MyViewHolder(TextView v) {
+        public MyViewHolder(View v) {
             super(v);
-            textView = v;
+            textView = v.findViewById(R.id.rowName);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public LeaderboardsAdapter (List<User> users) {
+    public LeaderboardsAdapter (ArrayList<User> users) {
         mUsers = users;
+    }
+
+    public void updateData(ArrayList<User> list){
+        mUsers=list;
     }
 
     // Create new views (invoked by the layout manager)
@@ -33,7 +40,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     public LeaderboardsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+        View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
@@ -45,7 +52,7 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
 
         Log.v("i wanna sleep", "i wanna sleep");
         User user = mUsers.get(position);
-        holder.textView.setText(user.getFirstName() + " " + user.getLastName() + " - "  + position);
+        holder.textView.setText(user.getFirstName() + " " + user.getLastName() + " - "  + (position+1));
 
 
     }
@@ -55,4 +62,6 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     public int getItemCount() {
         return mUsers.size();
     }
+
+
 }
