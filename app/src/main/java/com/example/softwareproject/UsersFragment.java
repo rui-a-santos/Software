@@ -79,7 +79,7 @@ public class UsersFragment extends Fragment {
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             String key = ds.getKey();
                             chatKeys.add(key);
                         }
@@ -127,10 +127,9 @@ public class UsersFragment extends Fragment {
                         users.add(selectedUser);
                         final ChatItem ci = new ChatItem(users, messages);
 
-                        if(chatKeys.contains(currentUser.getId() + selectedUser.getId())||chatKeys.contains(selectedUser.getId() + currentUser.getId())){
+                        if (chatKeys.contains(currentUser.getId() + selectedUser.getId()) || chatKeys.contains(selectedUser.getId() + currentUser.getId())) {
                             chatExists = true;
-                        }
-else {
+                        } else {
                             reference = FirebaseDatabase.getInstance().getReference("Chats");
 
                             reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -194,8 +193,6 @@ else {
             }
 
         }
-
-
 
 
     }
