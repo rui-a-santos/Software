@@ -21,9 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -131,29 +129,13 @@ public class ChatFragment extends Fragment {
 
             if (s.contains(mAuth.getCurrentUser().getUid())) {
 
-                Date date = ds.child("lastMessage").getValue(Date.class);
-
-                ArrayList<Message> messages = new ArrayList<Message>();
-                for (DataSnapshot ds1 : ds.child("messages").getChildren()){
-                        Date messageTime = ds1.child("messageTime").getValue(Date.class);
-                        String content = ds1.child("content").getValue(String.class);
-
-                        User recipient = ds1.child("recipient").getValue(User.class);
-                        User sender = ds1.child("recipient").getValue(User.class);
-                        Message message = new Message(sender, recipient, content, messageTime);
-                        messages.add(message);
-
-                }
-                ArrayList<User> users = new ArrayList<User>();
-                for (DataSnapshot ds2 : ds.child("users").getChildren()){
-                    User user = ds2.getValue(User.class);
-                    users.add(user);
-                }
-
-                ChatItem ci = new ChatItem(users, date, messages);
 
 
 
+                ChatItem ci =  getValue(ChatItem.class);
+
+
+//                ci = ds.getValue(ChatItem.class);
                 if (ci != null) {
 
 
@@ -165,7 +147,6 @@ public class ChatFragment extends Fragment {
 
 
         }
-
 
 
     }
