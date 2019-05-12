@@ -57,80 +57,6 @@
         android:typeface="monospace"
         map:fontFamily="sans-serif" />
 
-    <!--    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight=".2"
-        android:background="#868B8A"
-        android:baselineAligned="false"
-        android:gravity="top">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/steps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:background="#00696565"
-                android:fontFamily="sans-serif"
-                android:text="0 Steps Taken"
-                android:textAlignment="viewStart"
-                android:textAllCaps="false"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:typeface="monospace"
-                map:fontFamily="sans-serif" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/distance"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:text="0 Metres"
-                android:textAlignment="viewStart"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:typeface="monospace"
-                map:fontFamily="sans-serif" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/calories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
-                android:text="0 Calories Burned"
-                android:textAlignment="viewStart"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:typeface="monospace"
-                map:fontFamily="sans-serif" />
-        </TableRow>
-
-    </TableLayout> -->
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -201,6 +127,15 @@
                 android:src="@drawable/ic_exit_to_app_black_24dp"
                 fab:fab_label="Logout"
                 fab:fab_size="mini" />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/material_design_floating_action_menu_leaderboards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_format_list_numbered_black_24dp"
+                fab:fab_label="Leaderboards"
+                fab:fab_size="mini" />
+
         </com.github.clans.fab.FloatingActionMenu>
 
         <com.github.clans.fab.FloatingActionButton

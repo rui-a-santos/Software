@@ -68,8 +68,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private TextView caloriesTextView = null;
     private User currentUser = null;
     FloatingActionMenu materialDesignFAM;
-    FloatingActionButton floatingActionButtonChat, floatingActionButtonProfile,
-            floatingActionButtonLogout, floatingActionButtonCentre;
+    FloatingActionButton fabChat, fabProfile,
+            fabLogout, fabCentre, fabLeaderboads;
 
 
 
@@ -82,10 +82,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.distanceTextView = findViewById(R.id.distance);
         this.caloriesTextView = findViewById(R.id.calories);
         this.materialDesignFAM = findViewById(R.id.material_design_android_floating_action_menu);
-        this.floatingActionButtonChat = findViewById(R.id.material_design_floating_action_menu_chat);
-        this.floatingActionButtonProfile = findViewById(R.id.material_design_floating_action_menu_person);
-        this.floatingActionButtonLogout = findViewById(R.id.material_design_floating_action_menu_logout);
-        this.floatingActionButtonCentre = findViewById(R.id.material_design_floating_action_menu_centre);
+        this.fabChat = findViewById(R.id.material_design_floating_action_menu_chat);
+        this.fabProfile = findViewById(R.id.material_design_floating_action_menu_person);
+        this.fabLogout = findViewById(R.id.material_design_floating_action_menu_logout);
+        this.fabCentre = findViewById(R.id.material_design_floating_action_menu_centre);
+        this.fabLeaderboads = findViewById(R.id.material_design_floating_action_menu_leaderboards);
 
         createFabListeners();
 
@@ -99,9 +100,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.database = FirebaseDatabase.getInstance();
 
 
-        if (database == null) {
-            database.setPersistenceEnabled(true);
-        }
+//        if (database == null) {
+//            database.setPersistenceEnabled(true);
+//        }
         this.user = FirebaseAuth.getInstance().getCurrentUser();
 
         createStepsListener();
@@ -119,7 +120,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void createFabListeners() {
-        floatingActionButtonChat.setOnClickListener(new View.OnClickListener() {
+        fabChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.v("Profile", "Profile");
@@ -127,14 +128,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
-        floatingActionButtonProfile.setOnClickListener(new View.OnClickListener() {
+        fabProfile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.v("Chat", "Chat");
                 Intent intent = new Intent(MapActivity.this, Profile.class);
                 startActivity(intent);
             }
         });
-        floatingActionButtonLogout.setOnClickListener(new View.OnClickListener() {
+        fabLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(MapActivity.this)
@@ -156,13 +157,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .show();
             }
         });
-        floatingActionButtonCentre.setOnClickListener(new View.OnClickListener() {
+        fabCentre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLocation = new LatLng(mLat, mLng);
                 mCameraUpdate = CameraUpdateFactory.newLatLngZoom(mLocation, 16);
                 mGoogleMap.animateCamera(mCameraUpdate);
 
+            }
+        });
+
+        fabLeaderboads.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivity.this, Leaderboards.class);
+                startActivity(intent);
             }
         });
     }
@@ -422,6 +431,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             steps_walked++;
             DatabaseReference ref = database.getReference("Users").child(user.getUid()).child("steps");
             ref.setValue(steps_walked);
+            database.getReference("Steps").child(user.getUid()).setValue(-steps_walked);
         }
     }
 
