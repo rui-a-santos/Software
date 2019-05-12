@@ -215,7 +215,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if(calculateCaloriesBurnt(distanceRun) == 0) {
                         caloriesTextView.setText("Please begin walking to calculate calories.");
                     }
-                    caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " calories burnt");
+                    caloriesTextView.setText(calculateCaloriesBurnt(distanceRun) + " calories burned");
                 }
             }
 
