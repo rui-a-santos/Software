@@ -31,7 +31,6 @@ public class Profile extends AppCompatActivity {
     private TextView userSteps;
     private TextView userDistanceWalked;
     private TextView userCaloriesBurned;
-    private TextView userName;
     private ImageView profilePic;
 
     private FirebaseAuth mAuth;
@@ -50,8 +49,7 @@ public class Profile extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        userName = findViewById(R.id.user_profile_name);
-        userRank = findViewById(R.id.steps);
+        userRank = findViewById(R.id.rank);
         userSteps = findViewById(R.id.steps_taken);
         userDistanceWalked = findViewById(R.id.distance_walked);
         userCaloriesBurned = findViewById(R.id.calories_burned);
@@ -131,18 +129,16 @@ public class Profile extends AppCompatActivity {
 //                uInfo.setLastName(ds.child(userID).getValue(User.class).getLastName());
 //                uInfo.setWeight(ds.child(userID).getValue(User.class).getWeight()); //set the name
 //            }
-            User uInfo;
-            if(ds.child(userID).getValue() != null) {
-                uInfo = ds.child(userID).getValue(User.class);
-                userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
-                userRank.setText(uInfo.getFirstName());
-                Log.v("User steps", String.valueOf(uInfo.getSteps()));
-                userSteps.setText(uInfo.getSteps() + " steps taken");
-                long distance = getDistanceRun(uInfo.getSteps());
-                long calories = calculateCaloriesBurnt(distance, uInfo.getWeight());
-                userDistanceWalked.setText(distance + " metres travelled");
-                userCaloriesBurned.setText(calories + " calories burned");
-            }
+
+            User uInfo = ds.getValue(User.class);
+
+
+            userRank.setText(uInfo.getFirstName());
+            userSteps.setText(String.valueOf(uInfo.getSteps()));
+            long distance = getDistanceRun(uInfo.getSteps());
+            long calories = calculateCaloriesBurnt(distance, uInfo.getWeight());
+            userDistanceWalked.setText(String.valueOf(distance));
+            userCaloriesBurned.setText(String.valueOf(calories));
         }
         // Reference to an image file in Firebase Storage
         StorageReference storageReference = FirebaseStorage.getInstance().getReference("documentImages/noplateImg");

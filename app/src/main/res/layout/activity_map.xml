@@ -12,20 +12,6 @@
     android:orientation="vertical"
     android:id="@+id/base">
 
-    <TextView
-        android:id="@+id/steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:background="#DA4336"
-        android:text="0 steps taken"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="normal"
-        android:typeface="monospace"
-        map:fontFamily="sans-serif" />
-
 
     <TextView
         android:id="@+id/distance"
@@ -41,6 +27,19 @@
         android:typeface="monospace"
         map:fontFamily="sans-serif" />
 
+    <TextView
+        android:id="@+id/rank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="#DA4336"
+        android:text="0 steps taken"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:textStyle="normal"
+        android:typeface="monospace"
+        map:fontFamily="sans-serif" />
 
     <TextView
         android:id="@+id/calories"
@@ -49,7 +48,7 @@
         android:layout_gravity="center_horizontal"
         android:background="#DA4336"
         android:paddingBottom="3dp"
-        android:text="Please begin walking to calculate calories"
+        android:text="0 calories burned"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

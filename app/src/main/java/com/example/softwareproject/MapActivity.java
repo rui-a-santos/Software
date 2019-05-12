@@ -76,7 +76,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        this.stepsTextView = findViewById(R.id.steps);
+        this.stepsTextView = findViewById(R.id.rank);
         this.distanceTextView = findViewById(R.id.distance);
         this.caloriesTextView = findViewById(R.id.calories);
         this.materialDesignFAM = findViewById(R.id.material_design_android_floating_action_menu);
