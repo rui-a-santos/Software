@@ -195,26 +195,30 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     startRun = false;
                     endingSteps = steps_walked;
                     float stepstaken = endingSteps - startingSteps;
+                    float startingDistance = getDistanceRun((long)startingSteps);
+                    float endingDistance = getDistanceRun((long)endingSteps);
+                    float distanceRun = endingDistance-startingDistance;
+
                     float startingCalories = calculateCaloriesBurnt(startingSteps);
                     float endingCalories = calculateCaloriesBurnt(endingSteps);
 
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
 
-                    builder.setMessage("Hope you had a nice run! You took " + stepstaken + " steps and burned "
+                    builder.setMessage("Hope you had a nice run! You ran " + distanceRun + " metres, took " + stepstaken + " steps and burned "
                             + (endingCalories-startingCalories) + " calories!" )
                             .setTitle("Finished a run!");
 
-// 3. Get the <code><a href="/reference/android/app/AlertDialog.html">AlertDialog</a></code> from <code><a href="/reference/android/app/AlertDialog.Builder.html#create()">create()</a></code>
                     AlertDialog dialog = builder.create();
                     dialog.show();
-
-                    line.remove();
+                    if(line != null) line.remove();
                     line = null;
+                    fabRun.setLabelText("Track a run");
 
                 } else {
                     startRun = true;
                     startingSteps = steps_walked;
+                    fabRun.setLabelText("End the run");
                 }
             }
         });
