@@ -242,8 +242,6 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    Toast.makeText(SignUpActivity.this, "uploaded", Toast.LENGTH_SHORT).show();
-
                 } else {
                     // Handle failures
                     // ...

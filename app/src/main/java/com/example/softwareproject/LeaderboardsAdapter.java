@@ -54,7 +54,6 @@ public class LeaderboardsAdapter extends RecyclerView.Adapter<LeaderboardsAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Log.v("i wanna sleep", "i wanna sleep");
         User user = mUsers.get(position);
         holder.rowRank.setText(String.valueOf(position + 1));
         holder.rowName.setText(user.getFirstName() + " " + user.getLastName());
