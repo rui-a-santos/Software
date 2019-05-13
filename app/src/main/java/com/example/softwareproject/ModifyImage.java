@@ -6,6 +6,8 @@ import android.net.Uri;
 
 import java.io.FileNotFoundException;
 
+
+// Class used to facilitate BitMap manipulation
 class ModifyImage {
     public Bitmap decodeBitmapUri(SignUpActivity ctx, Uri uri) throws FileNotFoundException {
         int targetW = 1000;

@@ -1,6 +1,7 @@
 package com.example.softwareproject;
 
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -48,12 +51,7 @@ import java.util.Scanner;
  */
 public class SignUpActivity extends AppCompatActivity {
 
-    private static final String TAG = "Works";
-    private static final int CAMERA_REQUEST_CODE = 1;
-    private static final int PHOTO_REQUEST =10 ;
-    private static final int REQUEST_WRITE_PERMISSION = 20;
-    private static final String SAVED_INSTANCE_URI = "uri";
-    private static final String SAVED_INSTANCE_RESULT = "result";
+
     private static final int CAMERA_REQ = 1;
     private TextInputEditText inputPassword = null;
     private TextInputEditText inputPassword2 = null;
@@ -63,13 +61,13 @@ public class SignUpActivity extends AppCompatActivity {
     private TextInputEditText inputWeight = null;
     private ProgressDialog mProgress;
 
+    private static final String REGEX_EMAIL = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+
     private FirebaseAuth mAuth = null;
     ProgressDialog progressDialog;
 
     private StorageReference mStorage;
-    private FirebaseAuth firebase;
-    private Uri uri;
-    private Uri picUri;
+
     private ImageView mImageView;
     private Bitmap photo;
 
@@ -97,7 +95,13 @@ public class SignUpActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.iv);
 
         progressDialog = new ProgressDialog(SignUpActivity.this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED) {
 
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1);
+
+
+        }
 
 
     }
@@ -150,7 +154,7 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             User user = new User(
-                                    mAuth.getUid(),firstName, lastName,
+                                    mAuth.getUid(), firstName, lastName,
                                     email, weight
 
                             );
@@ -190,16 +194,28 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     public void takeSelfie(View view) {
+
+        final String email = inputEmail.getText().toString().trim();
+
+
+        if (!email.matches(REGEX_EMAIL)) {
+            Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        inputEmail.setEnabled(false);
+
         Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, CAMERA_REQ);
     }
+
     @SuppressWarnings("VisibleForTests")
-    public void submit(){
+    public void submit() {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] b = stream.toByteArray();
-        final StorageReference storageReference =FirebaseStorage.getInstance().getReference().child("documentImages").child("noplateImg");
+        final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("documentImages").child(inputEmail.getText().toString().trim());
 
         Task<Uri> urlTask = storageReference.putBytes(b).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
@@ -229,19 +245,16 @@ public class SignUpActivity extends AppCompatActivity {
         //StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profile_images").child(userID);
 
 
-
-
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQ && resultCode ==RESULT_OK) {
+        if (requestCode == CAMERA_REQ && resultCode == RESULT_OK) {
 
             photo = (Bitmap) data.getExtras().get("data");
+            mImageView.setImageBitmap(photo);
             submit();
         }
     }
-
-
 
 
 }

@@ -14,12 +14,12 @@
 
 
     <TextView
-        android:id="@+id/steps"
+        android:id="@+id/distance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="#DA4336"
-        android:text="0 steps taken"
+        android:text="0 metres"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -28,12 +28,12 @@
         map:fontFamily="sans-serif" />
 
     <TextView
-        android:id="@+id/distance"
+        android:id="@+id/rank"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:background="#DA4336"
-        android:text="0 metres"
+        android:text="0 steps taken"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -104,23 +104,6 @@
             fab:menu_showShadow="true">
 
             <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_run"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_directions_run_black_24dp"
-                fab:fab_label="Track a run"
-                fab:fab_size="mini" />
-
-
-            <com.github.clans.fab.FloatingActionButton
-                android:id="@+id/material_design_floating_action_menu_leaderboards"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_format_list_numbered_black_24dp"
-                fab:fab_label="Leaderboards"
-                fab:fab_size="mini" />
-
-            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/material_design_floating_action_menu_chat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -144,7 +127,13 @@
                 fab:fab_label="Logout"
                 fab:fab_size="mini" />
 
-
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/material_design_floating_action_menu_leaderboards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_format_list_numbered_black_24dp"
+                fab:fab_label="Leaderboards"
+                fab:fab_size="mini" />
 
         </com.github.clans.fab.FloatingActionMenu>
 

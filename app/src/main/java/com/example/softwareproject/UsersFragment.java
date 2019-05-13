@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,8 +33,7 @@ public class UsersFragment extends Fragment {
     private FirebaseAuth mAuth;
     private User currentUser = null;
     private DatabaseReference myRef;
-    private boolean chatExists = false;
-    private ArrayList<String> chatKeys;
+
     ArrayList<User> listUser;
 
 
@@ -61,7 +59,6 @@ public class UsersFragment extends Fragment {
         this.userList = view.findViewById(R.id.list_users);
         this.userListAdapter = new UserListAdapter(getContext(), listUser);
         userList.setAdapter(userListAdapter);
-        this.chatKeys = new ArrayList<String>();
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -74,23 +71,6 @@ public class UsersFragment extends Fragment {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 showData(dataSnapshot);
-
-                myRef = mFirebaseDatabase.getReference("/Chats");
-                myRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            String key = ds.getKey();
-                            chatKeys.add(key);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
             }
 
             @Override
@@ -113,53 +93,25 @@ public class UsersFragment extends Fragment {
                 reference.child(userid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        final DatabaseReference reference;
+                        DatabaseReference reference;
                         currentUser = dataSnapshot.getValue(User.class);
 
 
-                        final String chatKey = currentUser.getId() + selectedUser.getId();
+                        String chatKey = currentUser.getId() + selectedUser.getId();
                         ArrayList<Message> messages = new ArrayList<>();
 
-                        Message message = new Message(currentUser, selectedUser, "Hi! Welcome to our chat.");
+                        Message message = new Message(currentUser, selectedUser, "Hi!");
+                        Message message1 = new Message(currentUser, selectedUser, "Hi!");
                         messages.add(message);
+                        messages.add(message1);
                         ArrayList<User> users = new ArrayList<User>();
                         users.add(currentUser);
                         users.add(selectedUser);
-                        final ChatItem ci = new ChatItem(users, messages);
-
-                        if (chatKeys.contains(currentUser.getId() + selectedUser.getId()) || chatKeys.contains(selectedUser.getId() + currentUser.getId())) {
-                            chatExists = true;
-                        } else {
-                            reference = FirebaseDatabase.getInstance().getReference("Chats");
-
-                            reference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                        if (ds.getKey().equals(currentUser.getId() + selectedUser.getId()) || ds.getKey().equals(selectedUser.getId() + currentUser.getId())) {
-                                            chatExists = true;
-                                        } else {
-                                            chatExists = false;
-                                            reference.child(chatKey).setValue(ci);
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-
-                            });
-                        }
-
-                        if (chatExists) {
-                            Toast toast = Toast.makeText(getContext(), "Chat already exists!", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
+                        ChatItem ci = new ChatItem(users, messages);
 
 
+                        reference = FirebaseDatabase.getInstance().getReference();
+                        reference.child("Chats").child(chatKey).setValue(ci);
                     }
 
                     @Override
@@ -167,8 +119,12 @@ public class UsersFragment extends Fragment {
 
                     }
                 });
+
+
             }
         });
+
+
     }
 
     private void showData(DataSnapshot dataSnapshot) {
@@ -193,7 +149,5 @@ public class UsersFragment extends Fragment {
             }
 
         }
-
-
     }
 }

@@ -8,14 +8,12 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chatDate"
-        android:layout_weight="1"/>
+        android:id="@+id/chatDate" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/chatPerson"
-        android:layout_weight="1"/>
+        android:id="@+id/chatPerson" />
 
 
 </LinearLayout>

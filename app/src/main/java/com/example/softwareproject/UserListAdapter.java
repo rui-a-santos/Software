@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+
+// custom adapter used
+
 public class UserListAdapter extends ArrayAdapter {
     private ArrayList<User> userList;
 

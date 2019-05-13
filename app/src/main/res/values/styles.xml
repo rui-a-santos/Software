@@ -6,7 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/blueNavy</item>
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
@@ -22,14 +21,5 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="CustomActionBarTheme"
-        parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-    </style>
 
-    <!-- ActionBar styles -->
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#da4336</item>
-    </style>
 </resources>
