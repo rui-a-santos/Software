@@ -165,7 +165,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(SignUpActivity.this, "should work", Toast.LENGTH_LONG).show();
                                         updateUi();
                                     } else {
                                         //display a failure message

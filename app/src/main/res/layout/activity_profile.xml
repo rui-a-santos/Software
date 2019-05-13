@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_fitness_center_black_24dp" />
+            android:src="@color/white" />
 
         <ImageButton
             android:id="@+id/user_profile_photo"
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/header_cover_image"
-            android:background="#ebca0707"
+            android:background="#DA4336"
             android:elevation="4dp"
             android:paddingBottom="24dp">
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"
-                android:text="Placeholder"
+                android:text="Loading..."
                 android:textColor="#fff"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -60,24 +60,16 @@
 
 
             <TextView
-                android:id="@+id/rank"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="40dp"
-
-                android:textAlignment="center"
-                tools:text="rank" />
-
-            <TextView
                 android:id="@+id/steps_taken"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:layout_marginBottom="40dp"
-                android:text="@string/form_last_name"
 
+                android:text="@string/form_last_name"
                 android:textAlignment="center"
-                tools:text="steps taken" />
+                android:textSize="30dp"
+                tools:text="Loading..." />
 
             <TextView
                 android:id="@+id/distance_walked"
@@ -87,7 +79,8 @@
                 android:text="@string/confirm_email"
 
                 android:textAlignment="center"
-                tools:text="metres walked" />
+                android:textSize="30dp"
+                tools:text="Loading..." />
 
             <TextView
                 android:id="@+id/calories_burned"
@@ -97,7 +90,8 @@
                 android:text="@string/form_weight"
 
                 android:textAlignment="center"
-                tools:text="calories burned" />
+                android:textSize="30dp"
+                tools:text="Loading..." />
 
         </LinearLayout>
     </RelativeLayout>

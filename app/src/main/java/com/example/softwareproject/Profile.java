@@ -51,7 +51,6 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         userName = findViewById(R.id.user_profile_name);
-        userRank = findViewById(R.id.rank);
         userSteps = findViewById(R.id.steps_taken);
         userDistanceWalked = findViewById(R.id.distance_walked);
         userCaloriesBurned = findViewById(R.id.calories_burned);
@@ -130,7 +129,6 @@ public class Profile extends AppCompatActivity {
             if(ds.child(userID).getValue() != null && !(ds.child(userID).getValue() instanceof Long)) {
                 uInfo = ds.child(userID).getValue(User.class);
                 userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
-                userRank.setText(uInfo.getFirstName());
                 Log.v("User steps", String.valueOf(uInfo.getSteps()));
                 userSteps.setText(uInfo.getSteps() + " steps taken");
                 long distance = getDistanceRun(uInfo.getSteps());

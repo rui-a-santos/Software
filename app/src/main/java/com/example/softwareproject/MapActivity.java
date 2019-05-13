@@ -151,23 +151,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fabLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(MapActivity.this)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Logout")
-                        .setMessage("Are you sure you want to logout?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                FirebaseAuth.getInstance().signOut();
-                                Intent intent = new Intent(MapActivity.this, Login.class);
-                                startActivity(intent);
-                                finish();
-                            }
+            new AlertDialog.Builder(MapActivity.this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseAuth.getInstance().signOut();
+                            Intent intent = new Intent(MapActivity.this, Login.class);
+                            startActivity(intent);
+                            finish();
+                        }
 
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
             }
         });
         fabCentre.setOnClickListener(new View.OnClickListener() {
