@@ -5,14 +5,28 @@
     android:layout_height="match_parent"
     tools:context=".UsersFragment">
 
-
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        android:scrollbars="vertical"
-        android:id="@+id/list_users"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+       >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Users"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:paddingBottom="20sp"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:scrollbars="vertical"
+            android:id="@+id/list_users"/>
+    </LinearLayout>
+
 
 </RelativeLayout>

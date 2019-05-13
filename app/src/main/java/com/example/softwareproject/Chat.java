@@ -3,6 +3,7 @@ package com.example.softwareproject;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -34,7 +35,6 @@ public class Chat extends AppCompatActivity {
         chatViewPager = (ViewPager) findViewById(R.id.chatPager);
         chatTabsAcessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
         chatViewPager.setAdapter(chatTabsAcessorAdapter);
-
         chatTabLayout = (TabLayout)  findViewById(R.id.chat_tabs);
         chatTabLayout.setupWithViewPager(chatViewPager);
 
