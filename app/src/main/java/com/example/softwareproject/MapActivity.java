@@ -123,7 +123,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getUser();
 
         if (!checkRunPermissions()) {
-            Log.v("start", "started");
             Intent intent = new Intent(getApplicationContext(), LocationService.class);
             startService(intent);
         }
@@ -136,14 +135,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         fabChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("Profile", "Profile");
                 Intent intent = new Intent(MapActivity.this, Chat.class);
                 startActivity(intent);
             }
         });
         fabProfile.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.v("Chat", "Chat");
                 Intent intent = new Intent(MapActivity.this, Profile.class);
                 startActivity(intent);
             }
@@ -256,7 +253,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     post = (long)dataSnapshot.getValue();
                 }
                 if(post != 0) {
-                    Log.v("Database steps:", String.valueOf(post));
                     steps_walked = post;
 
                     long distanceRun = getDistanceRun(steps_walked);
@@ -319,9 +315,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 if(mMarkerList.containsKey(u.getId())) {
                     for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
                         String key = entry.getKey();
-                        Log.v("Help me", key + entry.getValue().getPosition());
                         if(key == u.getId()) {
-                            Log.v("I AM HERE", "I AM HERE");
                             Location currentLocation = new Location("currentLocation");
                             currentLocation.setLatitude(mLat);
                             currentLocation.setLongitude(mLng);
@@ -331,7 +325,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             userLocation.setLongitude(u.getLng());
 
                             float distance = currentLocation.distanceTo(userLocation);
-                            Log.v("Distance to " + u.getFirstName(), String.valueOf(distance));
                             //Only set the marker to visible if the user is within 10 miles.
                             if(distance < 16093.4) {
                                 entry.getValue().setVisible(true);
@@ -347,7 +340,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
                 } else {
                     Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
-                    Log.v("FML", "FML");
                     mMarkerList.put(u.getId(), marker);
                 }
             }
@@ -410,12 +402,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     protected void onPause() {
         super.onPause();
+        sManager.unregisterListener(this, stepSensor);
+        mBroadcastReceiver = null;
 
     }
 
     protected void onStop() {
         super.onStop();
         sManager.unregisterListener(this, stepSensor);
+        mBroadcastReceiver = null;
+
     }
 
     private void startRun() {
@@ -429,32 +425,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     .width(5)
                     .color(Color.RED));
         }
-//        LatLng position = new LatLng(mLat, mLng);
-//        if(!runPoints.isEmpty()) {
-//            if(runPoints.get(runPoints.size()-1) != position) {
-//                this.runPoints.add(position);
-//            }
-//        }
-//        Log.v("runPoints", runPoints.toString());
-////        for(int i = 0; i < this.runPoints.size(); i++) {
-////            this.lineOptions = new PolylineOptions().width(5).color(Color.RED).add(runPoints.get(i));
-////        }
-////        if(this.line != null) {
-////            this.line.remove();
-////        }
-////        mGoogleMap.addPolyline(this.lineOptions);
-//        for (int i = 0; i < runPoints.size() - 1; i++) {
-//            LatLng src = runPoints.get(i);
-//            LatLng dest = runPoints.get(i + 1);
-//
-//            // mMap is the Map Object
-//            mGoogleMap.addPolyline(
-//                    new PolylineOptions().add(
-//                            new LatLng(src.latitude, src.longitude),
-//                            new LatLng(dest.latitude,dest.longitude)
-//                    ).width(2).color(Color.BLUE).geodesic(true)
-//            );
-//        }
     }
 
     private boolean checkRunPermissions() {
@@ -494,8 +464,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 for(Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
                     String key = entry.getKey();
                     Marker m = entry.getValue();
-                    Log.v("MarkerID", marker.getId());
-                    Log.v("Marker Values", m.getId());
                     if(marker.getId().equals(m.getId())) {
                         Intent intent = new Intent(MapActivity.this, Profile.class);
                         Bundle bundle = new Bundle();
@@ -558,10 +526,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public int calculateCaloriesBurnt(float distance) {
         if(currentUser != null) {
-            Log.v("Weight", String.valueOf(currentUser.getWeight()));
             double calPerMile = 0.5 * currentUser.getWeight();
             double distanceInMiles = distance * 0.000621371;
-            Log.v("distance", String.valueOf(distanceInMiles));
             return (int)(calPerMile*distanceInMiles);
         }
         return 0;
