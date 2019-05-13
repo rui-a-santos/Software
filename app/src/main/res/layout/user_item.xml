@@ -7,6 +7,8 @@
     android:layout_height="wrap_content"
     android:text="Name"
     android:textAlignment="center"
-    android:id="@+id/user_name"/>
+    android:id="@+id/user_name"
+    android:paddingBottom="10sp"
+    android:paddingTop="10sp"/>
 
 </LinearLayout>

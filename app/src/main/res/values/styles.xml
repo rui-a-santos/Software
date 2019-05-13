@@ -28,8 +28,7 @@
     </style>
 
     <!-- ActionBar styles -->
-    <style name="MyActionBar"
-        parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="MyActionBar">
         <item name="android:background">#da4336</item>
     </style>
 </resources>

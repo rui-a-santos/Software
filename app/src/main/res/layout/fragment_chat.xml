@@ -17,11 +17,50 @@
         android:textSize="30sp"
         android:id="@+id/textchat" />
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/person"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last Message"
+            android:id="@+id/date"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+    </LinearLayout>
+
+
+
+
     <ListView
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/listChats"
         android:textAlignment="center"
     android:transcriptMode="alwaysScroll">
 </ListView>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_chats_tap_on_a_user_to_the_right_to_create_one"
+        android:id="@+id/nochat"
+        android:layout_weight="1"
+        android:textAlignment="center"
+        android:textSize="15sp"
+        android:paddingTop="60sp"/>
+
 </LinearLayout>

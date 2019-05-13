@@ -1,5 +1,6 @@
 package com.example.softwareproject;
 
+import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -23,14 +24,18 @@ public class Chat extends AppCompatActivity {
     private ViewPager chatViewPager;
     private TabLayout chatTabLayout;
     private TabsAccessorAdapter chatTabsAcessorAdapter;
-
-
+    private ColorDrawable color;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-
+color = new ColorDrawable(Color.argb(255, 218, 67, 54));
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setBackgroundDrawable(color);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        this.getSupportActionBar().setTitle("Chat");
         this.database = FirebaseDatabase.getInstance();
         this.user = FirebaseAuth.getInstance().getCurrentUser();
 

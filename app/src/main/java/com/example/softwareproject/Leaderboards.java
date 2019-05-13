@@ -1,5 +1,8 @@
 package com.example.softwareproject;
 
+import android.app.ActionBar;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -33,7 +36,7 @@ public class Leaderboards extends AppCompatActivity {
     private ArrayList<String> userKeys = new ArrayList();
     private ArrayList<User> users = new ArrayList<>();
     private FirebaseUser user;
-
+private ColorDrawable color;
 
 
     @Override
@@ -41,6 +44,12 @@ public class Leaderboards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leaderboards);
         recyclerView = findViewById(R.id.my_recycler_view);
+        color = new ColorDrawable(Color.argb(255, 218, 67, 54));
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setBackgroundDrawable(color);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        this.getSupportActionBar().setTitle("Leaderboard");
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView

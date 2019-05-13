@@ -41,4 +41,5 @@
 
     <string name="gcFrag">Group Chats</string>
     <string name="chatFrag">Your Chats</string>
+    <string name="no_chats_tap_on_a_user_to_the_right_to_create_one">No Chats?Tap on a user to the right to create one.</string>
 </resources>

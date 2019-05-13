@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -58,10 +59,10 @@ public class ChatFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.chatItems = new ArrayList<ChatItem>();
+        this.chatItems = new ArrayList<>();
         this.chatList = view.findViewById(R.id.listChats);
         this.chatListAdapter = new ChatListAdapter(getContext(), chatItems);
-        this.chatMap = new HashMap<String, ChatItem>();
+        this.chatMap = new HashMap<>();
         chatList.setAdapter(chatListAdapter);
 
 

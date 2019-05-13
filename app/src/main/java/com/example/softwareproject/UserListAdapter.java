@@ -29,7 +29,7 @@ public UserListAdapter(Context context, ArrayList<User> userList){
         User user = userList.get(i);
 
         TextView name = (TextView) view.findViewById(R.id.user_name);
-        name.setText(user.getFirstName());
+        name.setText(user.getFirstName() + " " + user.getLastName() + "(" + user.getEmail()+")");
 
         notifyDataSetChanged();   //Notify data set changed
         return view;

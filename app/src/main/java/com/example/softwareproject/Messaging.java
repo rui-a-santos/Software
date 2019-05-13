@@ -1,6 +1,9 @@
 package com.example.softwareproject;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -30,13 +33,18 @@ public class Messaging extends AppCompatActivity {
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
     private ListView listView;
-
+private ColorDrawable color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
-
+        color = new ColorDrawable(Color.argb(255, 218, 67, 54));
+        this.getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        this.getSupportActionBar().setDisplayShowCustomEnabled(true);
+        this.getSupportActionBar().setBackgroundDrawable(color);
+        this.getSupportActionBar().setDisplayShowTitleEnabled(true);
+        this.getSupportActionBar().setTitle("Messages");
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
