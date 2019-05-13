@@ -116,7 +116,7 @@ public class Profile extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-String email = null;
+
 
         for(DataSnapshot ds : dataSnapshot.getChildren()){
 //            User uInfo = new User();
@@ -131,7 +131,6 @@ String email = null;
                 uInfo = ds.child(userID).getValue(User.class);
                 userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
                 userRank.setText(uInfo.getFirstName());
-                email = uInfo.getEmail();
                 Log.v("User steps", String.valueOf(uInfo.getSteps()));
                 userSteps.setText(uInfo.getSteps() + " steps taken");
                 long distance = getDistanceRun(uInfo.getSteps());
@@ -141,8 +140,7 @@ String email = null;
             }
         }
         // Reference to an image file in Firebase Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("documentImages/" + email);
-        Toast.makeText(this,email, Toast.LENGTH_LONG).show();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("documentImages/noplateImg");
 
         try {
             final File localFile = File.createTempFile("images", "jpg");

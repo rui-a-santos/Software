@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,6 +32,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -41,7 +44,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.github.clans.fab.FloatingActionMenu;
 import com.github.clans.fab.FloatingActionButton;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,10 +73,15 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private TextView distanceTextView = null;
     private TextView caloriesTextView = null;
     private User currentUser = null;
-    FloatingActionMenu materialDesignFAM;
-    FloatingActionButton fabChat, fabProfile,
-            fabLogout, fabCentre, fabLeaderboads;
-
+    private FloatingActionMenu materialDesignFAM;
+    private FloatingActionButton fabChat, fabProfile,
+            fabLogout, fabCentre, fabLeaderboads, fabRun;
+    private List<LatLng> runPoints;
+    private boolean startRun = false;
+    private PolylineOptions lineOptions;
+    private Polyline line;
+    private float startingSteps;
+    private float endingSteps;
 
 
     @Override
@@ -78,7 +89,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        this.stepsTextView = findViewById(R.id.rank);
+        this.stepsTextView = findViewById(R.id.steps);
         this.distanceTextView = findViewById(R.id.distance);
         this.caloriesTextView = findViewById(R.id.calories);
         this.materialDesignFAM = findViewById(R.id.material_design_android_floating_action_menu);
@@ -87,12 +98,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.fabLogout = findViewById(R.id.material_design_floating_action_menu_logout);
         this.fabCentre = findViewById(R.id.material_design_floating_action_menu_centre);
         this.fabLeaderboads = findViewById(R.id.material_design_floating_action_menu_leaderboards);
+        this.fabRun = findViewById(R.id.material_design_floating_action_menu_run);
 
         createFabListeners();
 
         this.sManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         this.stepSensor = sManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         this.mMarkerList = new HashMap<>();
+        this.runPoints = new ArrayList<>();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -174,6 +187,43 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         });
+
+        fabRun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(startRun) {
+                    startRun = false;
+                    endingSteps = steps_walked;
+                    float stepstaken = endingSteps - startingSteps;
+                    float startingDistance = getDistanceRun((long)startingSteps);
+                    float endingDistance = getDistanceRun((long)endingSteps);
+                    float distanceRun = endingDistance-startingDistance;
+
+                    float startingCalories = calculateCaloriesBurnt(startingSteps);
+                    float endingCalories = calculateCaloriesBurnt(endingSteps);
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
+
+                    builder.setMessage("Hope you had a nice run! You ran " + distanceRun + " metres, took " + stepstaken + " steps and burned "
+                            + (endingCalories-startingCalories) + " calories!" )
+                            .setTitle("Finished a run!");
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    if(line != null) line.remove();
+                    line = null;
+                    fabRun.setLabelText("Track a run");
+
+                } else {
+                    startRun = true;
+                    startingSteps = steps_walked;
+                    fabRun.setLabelText("End the run");
+                }
+            }
+        });
+
+
     }
 
     private void getUser() {
@@ -210,7 +260,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     steps_walked = post;
 
                     long distanceRun = getDistanceRun(steps_walked);
-                    stepsTextView.setText(steps_walked + " steps walked");
+                    stepsTextView.setText(steps_walked + " steps taken");
                     distanceTextView.setText(distanceRun + " metres travelled");
                     if(calculateCaloriesBurnt(distanceRun) == 0) {
                         caloriesTextView.setText("Please begin walking to calculate calories.");
@@ -272,8 +322,25 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         Log.v("Help me", key + entry.getValue().getPosition());
                         if(key == u.getId()) {
                             Log.v("I AM HERE", "I AM HERE");
-                            entry.getValue().setPosition(loc);
-                            break;
+                            Location currentLocation = new Location("currentLocation");
+                            currentLocation.setLatitude(mLat);
+                            currentLocation.setLongitude(mLng);
+
+                            Location userLocation = new Location("userLocation");
+                            userLocation.setLatitude(u.getLat());
+                            userLocation.setLongitude(u.getLng());
+
+                            float distance = currentLocation.distanceTo(userLocation);
+                            Log.v("Distance to " + u.getFirstName(), String.valueOf(distance));
+                            //Only set the marker to visible if the user is within 10 miles.
+                            if(distance < 16093.4) {
+                                entry.getValue().setVisible(true);
+                                entry.getValue().setPosition(loc);
+                                break;
+                            } else {
+                                entry.getValue().setVisible(false);
+                                break;
+                            }
                         }
 
                         // do something with key and/or tab
@@ -310,9 +377,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             mBroadcastReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
+
                     //Receiving the latitude and longitude from the location service.
                     mLat = (double) intent.getExtras().get("lat");
                     mLng = (double) intent.getExtras().get("lng");
+                    if(startRun) {
+                        startRun();
+                    }
                     //Setting the location of the user.
                     mUserLocation = new Location("");
                     mUserLocation.setLatitude(mLat);
@@ -347,6 +418,44 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         sManager.unregisterListener(this, stepSensor);
     }
 
+    private void startRun() {
+        if(line != null) {
+            List<LatLng> points = line.getPoints();
+            points.add(new LatLng(mLat, mLng));
+            line.setPoints(points);
+        } else {
+            this.line = mGoogleMap.addPolyline(new PolylineOptions()
+                    .add(new LatLng(mLat, mLng), new LatLng(mLat, mLng))
+                    .width(5)
+                    .color(Color.RED));
+        }
+//        LatLng position = new LatLng(mLat, mLng);
+//        if(!runPoints.isEmpty()) {
+//            if(runPoints.get(runPoints.size()-1) != position) {
+//                this.runPoints.add(position);
+//            }
+//        }
+//        Log.v("runPoints", runPoints.toString());
+////        for(int i = 0; i < this.runPoints.size(); i++) {
+////            this.lineOptions = new PolylineOptions().width(5).color(Color.RED).add(runPoints.get(i));
+////        }
+////        if(this.line != null) {
+////            this.line.remove();
+////        }
+////        mGoogleMap.addPolyline(this.lineOptions);
+//        for (int i = 0; i < runPoints.size() - 1; i++) {
+//            LatLng src = runPoints.get(i);
+//            LatLng dest = runPoints.get(i + 1);
+//
+//            // mMap is the Map Object
+//            mGoogleMap.addPolyline(
+//                    new PolylineOptions().add(
+//                            new LatLng(src.latitude, src.longitude),
+//                            new LatLng(dest.latitude,dest.longitude)
+//                    ).width(2).color(Color.BLUE).geodesic(true)
+//            );
+//        }
+    }
 
     private boolean checkRunPermissions() {
         boolean permission = false;
@@ -363,6 +472,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.mGoogleMap = googleMap;
         this.mGoogleMap.setOnMarkerClickListener(this);
         this.mGoogleMap.setOnMapLoadedCallback(this);
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions

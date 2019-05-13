@@ -3,6 +3,7 @@ package com.example.softwareproject;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,15 +17,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// Login class
-
 public class Login extends AppCompatActivity {
-    // fields
-    FirebaseAuth auth;
+    FirebaseAuth auth ;
+    Intent intent = getIntent();
     TextInputEditText inputEmail;
     TextInputEditText inputPassword;
-
-    // On create method to initialise variables
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +39,6 @@ public class Login extends AppCompatActivity {
 
     }
 
-    // When you click on login
     public void login(View view) {
         final String email = inputEmail.getText().toString();
         final String password = inputPassword.getText().toString();
@@ -83,13 +79,10 @@ public class Login extends AppCompatActivity {
 
     }
 
-    // No account?
-
     public void toRegister(View view) {
         startActivity(new Intent(Login.this, SignUpActivity.class));
     }
 
-    //Password forgotten?
 
     public void goToReset(View view) {
         startActivity(new Intent(Login.this, ResetPassword.class));

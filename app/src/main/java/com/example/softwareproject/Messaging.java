@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,17 +50,18 @@ public class Messaging extends AppCompatActivity {
                 Intent intent = getIntent();
                 ChatItem ci = (ChatItem) intent.getSerializableExtra("ChatItem");
                 Message message;
-                if (mUser.getUid().equals(ci.getUsers().get(0))) {
+                if (mUser.getUid().equals(ci.getUsers().get(1).getId())) {
+                    Log.v("Hello", "First IF");
                     message = new Message(ci.getUsers().get(0), ci.getUsers().get(1), emojiconEditText.getText().toString());
                 } else {
-
+                    Log.v("Hello", "Second IF");
                     message = new Message(ci.getUsers().get(1), ci.getUsers().get(0), emojiconEditText.getText().toString());
 
                 }
 
 
                 ci.addMessage(message);
-                FirebaseDatabase.getInstance().getReference("Chats/" + intent.getStringExtra("Key") + "/messages").push().setValue(message);
+                FirebaseDatabase.getInstance().getReference("Chats").child(intent.getStringExtra("Key")) .child("messages").push().setValue(message);
                 emojiconEditText.setText("");
                 emojiconEditText.requestFocus();
 
@@ -79,7 +81,7 @@ public class Messaging extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot ds) {
-
+    messages.clear();
 
                 for (DataSnapshot ds1 : ds.getChildren()) {
                     Date messageTime = ds1.child("messageTime").getValue(Date.class);
@@ -89,7 +91,7 @@ public class Messaging extends AppCompatActivity {
                     User sender = ds1.child("recipient").getValue(User.class);
                     Message message = new Message(sender, recipient, content, messageTime);
                     messages.add(message);
-
+                    messageAdapter.notifyDataSetChanged();
                 }
 
 
@@ -99,6 +101,7 @@ public class Messaging extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
 
 

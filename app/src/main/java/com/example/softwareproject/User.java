@@ -3,12 +3,7 @@ package com.example.softwareproject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-// User class
-
 public class User implements Parcelable, java.io.Serializable{
-
-
-    //Define fields
 
     private String firstName;
     private String lastName;
@@ -23,8 +18,6 @@ public class User implements Parcelable, java.io.Serializable{
 
 
     public User() {}
-
-    // Constructor
 
     public User(String id, String firstName, String lastName, String email, double weight) {
         this.firstName = firstName;
@@ -64,9 +57,6 @@ public class User implements Parcelable, java.io.Serializable{
             return new User[size];
         }
     };
-
-
-    // Getters and setters
 
     public String getFirstName() {
         return firstName;
