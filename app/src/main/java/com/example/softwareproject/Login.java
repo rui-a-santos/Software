@@ -39,6 +39,8 @@ public class Login extends AppCompatActivity {
 
     }
 
+    // Log in
+
     public void login(View view) {
         final String email = inputEmail.getText().toString();
         final String password = inputPassword.getText().toString();
@@ -79,11 +81,13 @@ public class Login extends AppCompatActivity {
 
     }
 
+    // No account? Register
     public void toRegister(View view) {
         startActivity(new Intent(Login.this, SignUpActivity.class));
     }
 
 
+    // Password forgotten?
     public void goToReset(View view) {
         startActivity(new Intent(Login.this, ResetPassword.class));
     }

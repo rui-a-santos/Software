@@ -283,27 +283,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ref.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                User u = dataSnapshot.getValue(User.class);
-//                double lat = u.getLat();
-//                double lng = u.getLng();
-//                if(lat == 0 && lng == 0) return;
-//                LatLng loc = new LatLng(lat, lng);
-//                if(mMarkerList.containsKey(u.getId())) {
-//                    for ( Map.Entry<String, Marker> entry : mMarkerList.entrySet()) {
-//                        String key = entry.getKey();
-//                        Log.v("Help me", key + entry.getValue().getPosition());
-//                        if(key == u.getId()) {
-//                            Log.v("I AM HERE", "I AM HERE");
-//                            entry.getValue().setPosition(loc);
-//                            break;
-//                        }
-//                        // do something with key and/or tab
-//                    }
-//                } else {
-//                    Marker marker = mGoogleMap.addMarker(new MarkerOptions().position(loc).title(u.getFirstName() + " " + u.getLastName()));
-//                    Log.v("FML", "FML");
-//                    mMarkerList.put(u.getId(), marker);
-//                }
             }
 
             @Override

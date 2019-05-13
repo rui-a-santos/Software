@@ -52,6 +52,7 @@ import java.util.Scanner;
 public class SignUpActivity extends AppCompatActivity {
 
 
+    // Variables
     private static final int CAMERA_REQ = 1;
     private TextInputEditText inputPassword = null;
     private TextInputEditText inputPassword2 = null;
@@ -79,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
+    // Initialise variables
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +107,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
+    // Create account
 
 
     public void signUp(View view) {
@@ -180,6 +184,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+
+    // go to Login page
     public void updateUi() {
         startActivity(new Intent(SignUpActivity.this, Login.class));
         finish();
@@ -187,10 +193,13 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    //Already have an account?
     public void alreadySigned(View view) {
         updateUi();
     }
 
+
+    // Open the camera
 
     public void takeSelfie(View view) {
 
@@ -208,6 +217,8 @@ public class SignUpActivity extends AppCompatActivity {
         startActivityForResult(cameraIntent, CAMERA_REQ);
     }
 
+
+    // Submit to Firebase Storage
     @SuppressWarnings("VisibleForTests")
     public void submit() {
 
@@ -245,6 +256,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     }
+
+    // Gets the picture
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQ && resultCode == RESULT_OK) {
