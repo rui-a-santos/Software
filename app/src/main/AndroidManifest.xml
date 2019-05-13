@@ -42,7 +42,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Profile" android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ResetPassword" />
+        <activity android:name=".ResetPassword"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".TestActivity"
             android:label="@string/title_activity_test"
@@ -50,6 +52,7 @@
         <activity
             android:name=".Login"
             android:theme="@style/AppTheme.NoActionBar"
+            android:icon="@drawable/sflogo"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

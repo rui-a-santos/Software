@@ -45,7 +45,6 @@ public class Profile extends AppCompatActivity {
         if(bundle != null) {
             String key = bundle.getString("key");
             this.userID = key;
-            Log.v("HALLELUJAH", key);
         }
 
         super.onCreate(savedInstanceState);

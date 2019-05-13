@@ -93,7 +93,6 @@ private ColorDrawable color;
                 for(int i = 0; i < userKeys.size(); i++) {
                     Log.v("number " + i, userKeys.get(i));
                         if(dataSnapshot.getKey().equals(userKeys.get(i))) {
-                            Log.v("yolo", "yolo");
                             User user = dataSnapshot.getValue(User.class);
                             users.add(user);
                             Log.v("username", users.get(0).getFirstName());
@@ -115,7 +114,6 @@ private ColorDrawable color;
 
                 if(mAdapter == null) {
                     mAdapter = new LeaderboardsAdapter(sorted);
-                    Log.v("plshelp", sorted.toString());
                     recyclerView.setAdapter(mAdapter);
                 } else {
                     ((LeaderboardsAdapter)mAdapter).updateData(sorted);

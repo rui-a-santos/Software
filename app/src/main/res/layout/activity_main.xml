@@ -15,6 +15,17 @@
         android:src="@drawable/ic_fitness_center_black_24dp"
         android:contentDescription="@string/app_name" />
 
+    <TextView
+        android:id="@+id/simplyfitlogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:capitalize="none"
+        android:text="Simply Fit"
+        android:textAlignment="center"
+        android:textColor="@color/Brown"
+        android:textSize="36sp"
+        android:textStyle="bold" />
+
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
 
