@@ -51,6 +51,7 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         userName = findViewById(R.id.user_profile_name);
+        userRank = findViewById(R.id.rank);
         userSteps = findViewById(R.id.steps_taken);
         userDistanceWalked = findViewById(R.id.distance_walked);
         userCaloriesBurned = findViewById(R.id.calories_burned);
@@ -115,7 +116,7 @@ public class Profile extends AppCompatActivity {
     }
 
     private void showData(DataSnapshot dataSnapshot) {
-
+        String email = null;
 
         for(DataSnapshot ds : dataSnapshot.getChildren()){
 //            User uInfo = new User();
@@ -129,6 +130,7 @@ public class Profile extends AppCompatActivity {
             if(ds.child(userID).getValue() != null && !(ds.child(userID).getValue() instanceof Long)) {
                 uInfo = ds.child(userID).getValue(User.class);
                 userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
+                email = uInfo.getEmail();
                 Log.v("User steps", String.valueOf(uInfo.getSteps()));
                 userSteps.setText(uInfo.getSteps() + " steps taken");
                 long distance = getDistanceRun(uInfo.getSteps());
@@ -138,10 +140,13 @@ public class Profile extends AppCompatActivity {
             }
         }
         // Reference to an image file in Firebase Storage
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("documentImages/noplateImg");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("documentImages/" + email);
+
+
 
         try {
             final File localFile = File.createTempFile("images", "jpg");
+     
             storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
@@ -160,29 +165,29 @@ public class Profile extends AppCompatActivity {
 
 
     @Override
-        public void onStart() {
-            super.onStart();
-            mAuth.addAuthStateListener(mAuthListener);
-        }
-
-        @Override
-        public void onStop() {
-            super.onStop();
-            if (mAuthListener != null) {
-                mAuth.removeAuthStateListener(mAuthListener);
-            }
-        }
-
-
-        /**
-         * customizable toast
-         * @param message
-         */
-        private void toastMessage(String message){
-            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
-        }
-
-
-
-
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+
+    /**
+     * customizable toast
+     * @param message
+     */
+    private void toastMessage(String message){
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+}

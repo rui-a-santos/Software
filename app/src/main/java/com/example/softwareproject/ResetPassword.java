@@ -15,6 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+// Reset your password
+
 public class ResetPassword extends AppCompatActivity {
     private TextInputEditText resetEmail = null;
     private TextInputEditText resetEmail2 = null;
@@ -33,6 +35,8 @@ public class ResetPassword extends AppCompatActivity {
         reset = findViewById(R.id.btn_reset);
         back = findViewById(R.id.btn_back_login);
     }
+
+    // Send instructions to reset the password
 
     public void resetSend(View view) {
         String emailAddress = resetEmail.getText().toString();
@@ -59,6 +63,7 @@ public class ResetPassword extends AppCompatActivity {
                         });
     }
 
+    // Go back to login
     public void loginBack(View view) {
         startActivity(new Intent(ResetPassword.this,Login.class));
     }
