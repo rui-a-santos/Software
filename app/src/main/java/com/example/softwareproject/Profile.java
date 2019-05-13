@@ -130,7 +130,6 @@ public class Profile extends AppCompatActivity {
             if(ds.child(userID).getValue() != null && !(ds.child(userID).getValue() instanceof Long)) {
                 uInfo = ds.child(userID).getValue(User.class);
                 userName.setText(uInfo.getFirstName() + " " + uInfo.getLastName());
-                userRank.setText(uInfo.getFirstName());
                 email = uInfo.getEmail();
                 Log.v("User steps", String.valueOf(uInfo.getSteps()));
                 userSteps.setText(uInfo.getSteps() + " steps taken");
