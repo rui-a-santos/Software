@@ -146,10 +146,7 @@ public class Profile extends AppCompatActivity {
 
         try {
             final File localFile = File.createTempFile("images", "jpg");
-            if (localFile == null){
-                Toast.makeText(this,"No pic", Toast.LENGTH_SHORT).show();
-            }
-
+     
             storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
