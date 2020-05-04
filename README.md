@@ -1,10 +1,10 @@
 # SimplyFit - Software Engineering Project
 
-SimplyFit is an Android Fitness application. A Project Definition Document and a Final Audit Report describing the project fully is available in the repository.
+SimplyFit is an Android Fitness application. A Project Definition Document and a Final Audit Report describing the project fully are available in the repository.
 
 ## Getting Started
 
-To run the project, install the APK in an android device and run. To run the code, download as zip and import into Android Studio as a project.
+To run the project, install the APK on an android device and run application. To run the code, download as zip and import into Android Studio as a project.
 
 ## Authors
 
